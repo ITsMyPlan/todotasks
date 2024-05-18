@@ -33,6 +33,7 @@
       }
     ],
     "eqeqeq": "off",
-     "react/button-has-type": "off"
+    "react/button-has-type": "off",
+    "react/function-component-definition":[3, {"namedcomponents": ["function-declaration", "function-expression", "arrow-function"]}] 
   }
 }
