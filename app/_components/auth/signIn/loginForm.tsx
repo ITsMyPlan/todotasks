@@ -1,0 +1,17 @@
+
+import { login } from './actions'
+
+export default function LoginForm() {
+// 이메일 양식 체크
+// 비번 양식 체크
+
+  return (
+    <form>
+      <label htmlFor="email">Email:</label>
+      <input id="email" name="email" type="email" required />
+      <label htmlFor="password">Password:</label>
+      <input id="password" name="password" type="password" required />
+      <button formAction={login}>Log in</button>
+    </form>
+  )
+}

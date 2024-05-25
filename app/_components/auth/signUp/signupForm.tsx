@@ -1,0 +1,16 @@
+'use client'
+import { signup } from './actions'
+
+export default function SignupForm() {
+// 이메일 양식 ㅊㅔ크
+// 비번 양식 체크
+  return (
+    <form>
+      <label htmlFor="email">Email:</label>
+      <input id="email" name="email" type="email" required />
+      <label htmlFor="password">Password:</label>
+      <input id="password" name="password" type="password" required />
+      <button formAction={signup}>Sign up</button>
+    </form>
+  )
+}

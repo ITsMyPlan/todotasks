@@ -1,13 +1,13 @@
 import Sidebar from '@/_components/layout/Sidebar'
-import LoginForm from '../_components/auth/signIn/loginForm'
+import SignupForm from '../_components/auth/signUp/signupForm'
 
-export default function LoginPage() {
+export default function SignupPage() {
   return (
     <div className="container flex h-screen mx-[21px] my-[22px]">
       <Sidebar />
       <div className="box-border ml-[10px] w-screen">
-        <p>Login</p>
-        <LoginForm />
+        <p>signup</p>
+        <SignupForm />
       </div>
     </div>
   )
