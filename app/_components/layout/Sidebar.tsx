@@ -46,7 +46,9 @@ export default function Sidebar() {
         Tags
         <div>Add new tags</div>
       </div>
-      <button onClick={logout}>sign out</button>
+      <div> 
+        {userData ? <button onClick={logout}>sign out</button> : ""}
+        </div>
     </div>
   )
 }
