@@ -1,6 +1,10 @@
 'use client'
 import { FormEvent, useState } from 'react'
 import { login } from './actions'
+import Link from 'next/link'
+import Image from 'next/image'
+import googleIcon from '../../../../public/icons/googleIcon.png'
+import { createClient } from '@/_utils/supabase/client'
 
 type SignupForm = {
   email: string
@@ -25,30 +29,50 @@ export default function LoginForm() {
       alert('이메일과 패스워드 모두 작성해주세요.')
     }
   }
+
+  const handleGoogleLogin = () => {
+      const supabase = createClient()
+      supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent',
+        },
+      },
+    })
+    }
   
   return (
-<form onSubmit={handleSubmit}>
-      <label htmlFor="email">Email:</label>
-      <input
-        id="email"
-        name="email"
-        type="email"
-        value={form.email}
-        onChange={e => setForm({ ...form, email: e.target.value })}
-        placeholder="Email"
-        required
-      />
-      <label htmlFor="password">Password:</label>
-      <input
-        id="password"
-        name="password"
-        type="password"
-        value={form.password}
-        onChange={e => setForm({ ...form, password: e.target.value })}
-        placeholder="Must have at least 8 characters"
-        required
-      />
-      <button type="submit">Login</button>
-    </form>
+    <div>
+      <button onClick={handleGoogleLogin}>
+        <Image src={googleIcon} alt="google logo" width={30} height={30} />
+        <div>Continue with Google</div>
+      </button>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="email">Email:</label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          value={form.email}
+          onChange={e => setForm({ ...form, email: e.target.value })}
+          placeholder="Email"
+          required
+        />
+        <label htmlFor="password">Password:</label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          value={form.password}
+          onChange={e => setForm({ ...form, password: e.target.value })}
+          placeholder="Must have at least 8 characters"
+          required
+        />
+        <button type="submit">Login</button>
+      </form>
+      <Link href={'/signup'}>Create New Account</Link>
+    </div>
   )
 }
