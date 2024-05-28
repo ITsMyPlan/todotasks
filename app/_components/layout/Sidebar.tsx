@@ -3,11 +3,11 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { User as SupabaseUser } from '@supabase/supabase-js'
-import { createClient } from '_utils/supabase/client'
+import { createClient } from '@/_utils/supabase/client'
 
 import { useEffect, useState } from 'react'
-import logout from '_components/auth/signOut/actions'
-import UnknownUser from '../../../public/icons/unknown.png'
+import logout from '@/_components/auth/signOut/actions'
+import UnknownUser from '@/public/icons/unknown.png'
 
 interface User extends SupabaseUser {}
 

@@ -3,7 +3,7 @@ import { FormEvent, useState } from 'react'
 import { login } from './actions'
 import Link from 'next/link'
 import Image from 'next/image'
-import googleIcon from '../../../../public/icons/googleIcon.png'
+import googleIcon from '@/public/icons/googleIcon.png'
 import { createClient } from '@/_utils/supabase/client'
 
 type SignupForm = {

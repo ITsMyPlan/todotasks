@@ -1,5 +1,5 @@
 import Sidebar from '@/_components/layout/Sidebar'
-import SignupForm from '../_components/auth/signUp/signupForm'
+import SignupForm from '@/_components/auth/signUp/signupForm'
 
 export default function SignupPage() {
   return (

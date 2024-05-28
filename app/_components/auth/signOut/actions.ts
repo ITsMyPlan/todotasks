@@ -1,4 +1,4 @@
-import { createClient } from '_utils/supabase/client'
+import { createClient } from '@/_utils/supabase/client'
 
 export default async function logout() {
   const supabase = createClient()

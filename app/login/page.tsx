@@ -1,5 +1,5 @@
 import Sidebar from '@/_components/layout/Sidebar'
-import LoginForm from '../_components/auth/signIn/loginForm'
+import LoginForm from '@/_components/auth/signIn/loginForm'
 
 export default function LoginPage() {
   return (
