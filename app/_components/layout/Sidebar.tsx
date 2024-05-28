@@ -36,7 +36,7 @@ export default function Sidebar() {
       <div>
         List
         <div>
-          <Link href="/">Today</Link>
+          <Link href="/today">Today</Link>
         </div>
         <div>
           <Link href="/calendar">Calendar</Link>

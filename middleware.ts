@@ -1,12 +1,73 @@
-import { type NextRequest } from "next/server";
-import { updateSession } from "@/_utils/supabase/middleware";
+import { type NextRequest, NextResponse } from 'next/server'
+import { updateSession } from '@/_utils/supabase/middleware'
+import { createServerClient, type CookieOptions } from '@supabase/ssr'
+
+// 로그인해야 접근할 수 있는 루트[]
+const protectedRoutes = ['/today', '/calendar']
 
 export async function middleware(request: NextRequest) {
-    return await updateSession(request);
+  const response = await updateSession(request)
+
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) {
+          return request.cookies.get(name)?.value
+        },
+        set(name: string, value: string, options: CookieOptions) {
+          request.cookies.set({
+            name,
+            value,
+            ...options,
+          })
+          response.cookies.set({
+            name,
+            value,
+            ...options,
+          })
+        },
+        remove(name: string, options: CookieOptions) {
+          request.cookies.set({
+            name,
+            value: '',
+            ...options,
+          })
+          response.cookies.set({
+            name,
+            value: '',
+            ...options,
+          })
+        },
+      },
+    },
+  )
+
+  const { data: { session }, error} = await supabase.auth.getSession()
+
+// 로그인된 상태면 /login에 접근 불가하게 해뒀는데, /signup를 막지 않은 이유는 나중에 /login에 /signup 합치려고..
+  if (request.nextUrl.pathname === '/login' && session) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/'
+    return NextResponse.redirect(url)
+  }
+
+// /today, /calendar에 로그인 아닌 상태로 접근하면 /login으로 리다이렉션되게 해뒀는데
+// 그냥 냅다 이동해 버려서 사용자가 어리둥절 할 수 있으니 이후 로그인하라는 지시가 있는 모달을 달아야 할듯
+  if (protectedRoutes.includes(request.nextUrl.pathname)) {
+    if (!session) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/login'
+      return NextResponse.redirect(url)
+    }
+  }
+  if(error) {
+    console.error("root middleware error: ", error)
+  }
+  return response
 }
 
 export const config = {
-    matcher: [
-        "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
-    ],
-};
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],
+}
