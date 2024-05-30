@@ -1,5 +1,5 @@
-import Sidebar from '_components/layout/Sidebar'
-import Todo from '_components/layout/Todo'
+import Sidebar from '@/_components/layout/Sidebar'
+import Todo from '@/_components/layout/Todo'
 
 export default function Today() {
   return (
