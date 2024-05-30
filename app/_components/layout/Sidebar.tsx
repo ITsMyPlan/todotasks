@@ -1,29 +1,36 @@
 'use client'
+
 import Link from 'next/link'
 import Image from 'next/image'
-import { useEffect } from 'react'
-import { useUserStore } from '@/store/useUserStore'
+import { User as SupabaseUser } from '@supabase/supabase-js'
+import { createClient } from '@/_utils/supabase/client'
 
+import { useEffect, useState } from 'react'
 import logout from '@/_components/auth/signOut/actions'
 import UnknownUser from '@/public/icons/unknown.png'
 
+interface User extends SupabaseUser {}
 
-const Sidebar: React.FC = () => {
-  const user = useUserStore(state => state.user)
-  const fetchUser = useUserStore(state => state.fetchUser)
+export default function Sidebar() {
+  const [userData, setUserData] = useState<User | null>(null)
 
   useEffect(() => {
-    fetchUser()
-  }, [fetchUser])
+    const fetchData = async () => {
+      const supabase = createClient()
+      const { data: { user }, error } = await supabase.auth.getUser()
+      setUserData(user)
+    }
+    fetchData()
+  }, [])
 
-  const email = user ? user.email : null
+  const email = userData ? userData.email : null
 
   return (
     <div className="box-border bg-gray-100 xl rounded-2xl w-80">
       <div>
         <div>
           <Image src={UnknownUser} alt="userimg" width={30} height={30} />
-          {user ? `${email}` : <Link href="/login">Login</Link>}
+          {userData ? `${email}` : <Link href="/login">Login</Link>}
         </div>
       </div>
       <div>
@@ -39,8 +46,9 @@ const Sidebar: React.FC = () => {
         Tags
         <div>Add new tags</div>
       </div>
-      <div>{user ? <button onClick={logout}>sign out</button> : ''}</div>
+      <div> 
+        {userData ? <button onClick={logout}>sign out</button> : ""}
+        </div>
     </div>
   )
 }
-export default Sidebar
