@@ -1,20 +1,44 @@
-import useModalStore from '@/store/useModalStore'
-import { ModalProps } from '@/_types/modalState'
+import { useState } from 'react'
+import useTaskStore from '@/store/useTaskStore'
+import { useAddTaskModalState, useViewTaskModalState, useModalActions } from '@/store/useModalStore'
+import { ModalProps } from '@/_types/modalType'
 
 const Modal = ({ children }: ModalProps) => {
-  const { show, toggleModal } = useModalStore(state => ({
-    show: state.show,
-    toggleModal: state.toggleModal,
-  }))
-  if (!show) return null
+  const addTaskOn = useAddTaskModalState()
+  const viewTaskOn = useViewTaskModalState()
+  const { changeModalState } = useModalActions()
+
+  const addTask = useTaskStore(state => state.addTask)
+
+  const [title, setTitle] = useState("")
+  const [detail, setDetail] = useState("")
+
+  const handleAddTask = () => {
+    addTask(title, detail)
+    setTitle("")
+    setDetail("")
+    changeModalState("add")
+  }
+
+  if (!addTaskOn && !viewTaskOn) return null
 
   return (
     <div>
-      <p>Tasks</p>
-      <button type="button" onClick={toggleModal}>
-        X
-      </button>
-      <div>{children}</div>
+      <div>
+        <button type="button" onClick={() => changeModalState(addTaskOn ? 'add' : 'view')}>
+          X
+        </button>
+        {addTaskOn && (
+          <div>
+            <input type="text" placeholder="Task" value={title} onChange={e => setTitle(e.target.value)} />
+            <textarea placeholder="Description" value={detail} onChange={e => setDetail(e.target.value)} />
+            <button type="button" onClick={handleAddTask}>
+              ADD
+            </button>
+          </div>
+        )}
+        {viewTaskOn && <div>{children}</div>}
+      </div>
     </div>
   )
 }

@@ -1,21 +1,49 @@
 'use client'
-import useModalStore from "@/store/useModalStore"
-import Modal from "@/_components/common/Modal"
+import { useState } from 'react'
+import Modal from '@/_components/common/Modal'
+import { useViewTaskModalState, useModalActions } from '@/store/useModalStore'
+import useTaskStore from '@/store/useTaskStore'
+import { Task } from '@/_types/taskType'
 
 export default function Todo() {
-   const { show, toggleModal } = useModalStore(state => ({
-     show: state.show,
-     toggleModal: state.toggleModal,
-   }))
+  const viewTask = useViewTaskModalState()
+  const { changeModalState } = useModalActions()
 
+  const tasks = useTaskStore(state => state.tasks)
+
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null)
+
+  const addTaskBtn = () => {
+    setSelectedTask(null)
+    changeModalState('add')
+  }
+
+  const viewTaskBtn= (task: Task) => {
+    setSelectedTask(task)
+    changeModalState('view')
+  }
 
   return (
     <div className="box-border ml-[10px] w-screen">
       <p>Today</p>
-      <div className="border-b-4 border-lightGray/30 my-[1%]">dd</div>
-      <button onClick={toggleModal}>+add new tasks</button>
-      {show && <Modal children={undefined} />}
-      <div>d</div>
+      <div className="border-b-4 border-lightGray/30 my-[1%]">Tasks</div>
+      <button onClick={addTaskBtn}>+ Add new tasks</button>
+      <div>
+        {tasks.map(task => (
+          <div key={task.id}>
+            <span>{task.title}</span>
+            <button onClick={() => viewTaskBtn(task)}>View Details</button>
+          </div>
+        ))}
+      </div>
+      <Modal>
+        {viewTask && selectedTask && (
+          <div>
+            <h2>{selectedTask.title}</h2>
+            <p>{selectedTask.detail}</p>
+          </div>
+        )}
+      </Modal>
     </div>
   )
 }
