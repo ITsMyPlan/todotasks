@@ -13,4 +13,7 @@
   .flexwrap {
     @apply flex flex-wrap;
   }
+    .container {
+    @apply max-w-full self-center;
+  }
 }

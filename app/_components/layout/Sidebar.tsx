@@ -5,43 +5,79 @@ import { useUserStore } from '@/store/useUserStore'
 import { useEffect } from 'react'
 import logout from '@/_components/auth/signOut/actions'
 import UnknownUser from '@/public/icons/unknown.png'
-
+import TodayIcon from '@/public/icons/todayicon.png'
+import CalendarIcon from '@/public/icons/calendaricon.png'
+import AddIcon from '@/public/icons/add.png'
+import SignoutIcon from '@/public/icons/SignoutIcon.png'
 
 const Sidebar = () => {
+  const user = useUserStore(state => state.user)
+  const fetchUser = useUserStore(state => state.fetchUser)
 
- const user = useUserStore(state => state.user)
- const fetchUser = useUserStore(state => state.fetchUser)
+  useEffect(() => {
+    fetchUser()
+  }, [fetchUser])
 
- useEffect(() => {
-   fetchUser()
- }, [fetchUser])
-
- const email = user ? user.email : null
+  const email = user ? user.email : null
 
   return (
-    <div className="box-border bg-gray-100 xl rounded-2xl w-80">
-      <div>
-        <div>
-          <Image src={UnknownUser} alt="userimg" width={30} height={30} />
-          {user ? `${email}` : <Link href="/signin">Login</Link>}
+    <div className="hidden sm:block relative box-border bg-gray-100 font-bold text-neutral-500 rounded-2xl w-[300px] min-w-[300px] px-[27px] py-[22px]">
+      <div className="border-b-4 border-lightGray/70 mb-[14px] pb-[18px]">
+        <button type="button" className="flex items-center">
+          <div className="max-w-max mr-[18px]">
+            <Image src={UnknownUser} alt="userimg" style={{ width: 30, height: 30 }} />
+          </div>
+          <div className="text-stone-900">{user ? `${email}` : <Link href="/signin">Login</Link>}</div>
+        </button>
+      </div>
+
+      <div className="border-b-4 border-lightGray/70">
+        <div className="">List</div>
+        <div className="my-[14px] text-stone-900">
+          <button type="button" className="flex items-center mb-[14px]">
+            <div className="max-w-max mr-[18px]">
+              <Image src={TodayIcon} alt="userimg" style={{ width: 20, height: 11 }} />
+            </div>
+            <div>
+              <Link href="/today">Today</Link>
+            </div>
+          </button>
+
+          <button type="button" className="flex items-center">
+            <div className="max-w-max mr-[18px]">
+              <Image src={CalendarIcon} alt="userimg" style={{ width: 20, height: 20 }} />
+            </div>
+            <div>
+              <Link href="/calendar">Calendar</Link>
+            </div>
+          </button>
         </div>
       </div>
-      <div>
-        List
-        <div>
-          <Link href="/today">Today</Link>
-        </div>
-        <div>
-          <Link href="/calendar">Calendar</Link>
+
+      <div className="my-[14px]">
+        <div className="mb-[14px]">Tags</div>
+        <button type="button" className="flex items-center mb-[14px]">
+          <div className="max-w-max mr-[18px]">
+            <Image src={AddIcon} alt="userimg" style={{ width: 20, height: 20 }} />
+          </div>
+          <div>Add new tags</div>
+        </button>
+      </div>
+
+      <div className="absolute w-[246px] max-h-[600px] bottom-0 py-[32px]">
+        <div className="border-t-4 border-lightGray/70 pt-[32px]">
+          {user ? (
+            <button type="button" onClick={logout} className="flex items-center">
+              <div className="max-w-max mr-[18px]">
+                <Image src={SignoutIcon} alt="userimg" style={{ width: 20, height: 20 }} />
+              </div>
+              <div>Logout</div>
+            </button>
+          ) : (
+            ''
+          )}
         </div>
       </div>
-      <div>
-        Tags
-        <div>Add new tags</div>
-      </div>
-      <div> 
-        {user ? <button onClick={logout}>sign out</button> : ""}
-        </div>
     </div>
   )
 }
