@@ -1,7 +1,7 @@
 'use client'
 import Sidebar from '@/_components/layout/Sidebar'
-import LoginForm from '@/_components/auth/signIn/loginForm'
-import SignupForm from '@/_components/auth/signUp/signupForm'
+import LoginForm from '@/_components/auth/signIn/LoginForm'
+import SignupForm from '@/_components/auth/signUp/SignupForm'
 import { useState } from 'react'
 
 export default function SignInPage() {
