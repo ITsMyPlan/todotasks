@@ -23,7 +23,7 @@ const Sidebar = () => {
       <div>
         <div>
           <Image src={UnknownUser} alt="userimg" width={30} height={30} />
-          {user ? `${email}` : <Link href="/login">Login</Link>}
+          {user ? `${email}` : <Link href="/signin">Login</Link>}
         </div>
       </div>
       <div>

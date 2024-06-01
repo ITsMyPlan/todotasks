@@ -23,7 +23,7 @@ const Modal = ({ children }: ModalProps) => {
   if (!addTaskOn && !viewTaskOn) return null
 
   return (
-    <div>
+    <div className=''>
       <div>
         <button type="button" onClick={() => changeModalState(addTaskOn ? 'add' : 'view')}>
           X
