@@ -3,7 +3,7 @@ import Todo from '@/_components/layout/Todo'
 
 export default function Today() {
   return (
-    <div className="container flex min-w-80 max-w-80 h-lvh mx-[21px] my-[22px]">
+    <div className="container w-100% z-0 flex h-screen px-[21px] py-[22px] bg-red-100">
       <Sidebar />
       <Todo />
     </div>

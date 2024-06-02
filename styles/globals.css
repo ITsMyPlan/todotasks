@@ -13,7 +13,14 @@
   .flexwrap {
     @apply flex flex-wrap;
   }
-    .container {
-    @apply max-w-full self-center;
+  .container {
+    @apply max-w-full;
+  }
+  .wrap {
+    @apply max-h-full;
   }
 }
+
+/* @media screen(sm) {
+
+} */

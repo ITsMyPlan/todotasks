@@ -14,7 +14,7 @@ export default function SignInPage() {
   return (
     <div className="container flex h-screen mx-[21px] my-[22px]">
       <Sidebar />
-      <div className="box-border ml-[10px] w-screen">
+      <div className="box-border ml-[10px]">
         {isClicked === true ? (
           <div>
             <p>signup</p>

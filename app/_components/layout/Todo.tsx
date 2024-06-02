@@ -24,7 +24,7 @@ export default function Todo() {
   }
 
   return (
-    <div className="box-border ml-[10px] w-screen">
+    <div className="relative ml-[10px] z-0 w-100% container h-100%">
       <p>Today</p>
       <div className="border-b-4 border-lightGray/30 my-[1%]">Tasks</div>
       <button onClick={addTaskBtn}>+ Add new tasks</button>
