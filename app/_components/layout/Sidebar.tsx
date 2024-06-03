@@ -9,6 +9,7 @@ import TodayIcon from '@/public/icons/todayicon.png'
 import CalendarIcon from '@/public/icons/calendaricon.png'
 import AddIcon from '@/public/icons/add.png'
 import SignoutIcon from '@/public/icons/SignoutIcon.png'
+import ArrowBtn from '@/public/icons/arrow1.png'
 
 const Sidebar = () => {
   const user = useUserStore(state => state.user)
@@ -34,21 +35,27 @@ const Sidebar = () => {
       <div className="border-b-4 border-lightGray/70">
         <div className="">List</div>
         <div className="my-[14px] text-stone-900">
-          <button type="button" className="flex items-center mb-[14px]">
+          <button type="button" className="flex items-center mb-[14px] relative w-full">
             <div className="max-w-max mr-[18px]">
-              <Image src={TodayIcon} alt="userimg" style={{ width: 20, height: 11 }} />
+              <Image src={TodayIcon} alt="userimg" style={{ width: 20, height: 11.4 }} />
             </div>
             <div>
               <Link href="/today">Today</Link>
             </div>
+            <div className="absolute right-0">
+              <Image src={ArrowBtn} alt="view more" style={{ width: 7, height: 14 }} />
+            </div>
           </button>
 
-          <button type="button" className="flex items-center">
+          <button type="button" className="flex items-center relative w-full">
             <div className="max-w-max mr-[18px]">
               <Image src={CalendarIcon} alt="userimg" style={{ width: 20, height: 20 }} />
             </div>
             <div>
               <Link href="/calendar">Calendar</Link>
+            </div>
+            <div className="absolute right-0">
+              <Image src={ArrowBtn} alt="view more" style={{ width: 7, height: 14 }} />
             </div>
           </button>
         </div>
