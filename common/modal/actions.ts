@@ -12,7 +12,7 @@ export const createTask = async (
   detail: string,
   user: User,
   addTask: (title: string, detail: string) => void,
-  changeModalState: (type: 'add' | 'view') => void,
+  changeModalState: (type: 'add') => void,
 ) => {
   const supabase = createClient()
   if (!user) {

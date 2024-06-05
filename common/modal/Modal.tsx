@@ -23,12 +23,14 @@ const Modal = ({ children }: ModalProps) => {
 
   // 현재 createTask에 changeModalState('add')라서 이름을 handleAddTask로 지어둠
   const handleAddTask = (e: FormEvent) => {
+e.preventDefault()
+      
+
     if (!title) {
       alert('please write a Task name')
     } else if (title.length === 0) {
       alert('please write a Task name at least 1 character')
     } else {
-      e.preventDefault()
       
       createTask(e, title, detail, user, addTask, changeModalState)
       setTitle('')
@@ -90,3 +92,11 @@ const Modal = ({ children }: ModalProps) => {
 }
 
 export default Modal
+
+// 모달 로직 수정
+// 새로고침하면 없어지는 거 상시 통신으로 해결해야할 거같은데 찾아보기
+// 삭제 수정 구현
+// css
+// 로그인, 가입 그냥 페이지 안ㅆ고 모달에서 해결? 페이지는 딱 today calendar만 잇게
+// 배포
+// 캘린더

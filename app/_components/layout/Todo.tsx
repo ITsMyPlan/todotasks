@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import Image from 'next/image'
-import Modal from '@/_components/common/Modal'
+import Modal from '@/common/modal/Modal'
 import { useViewTaskModalState, useModalActions } from '@/store/useModalStore'
 import useTaskStore from '@/store/useTaskStore'
 import { Task } from '@/_types/taskType'
@@ -34,8 +34,8 @@ export default function Todo() {
       </div>
       <div className="">
         {tasks.map(task => (
-          <div className="border-b-4 border-lightGray/30">
-            <div key={task.id} className="flex justify-between">
+          <div key={task.id} className="border-b-4 border-lightGray/30">
+            <div className="flex justify-between">
               <span>{task.title}</span>
               <button onClick={() => viewTaskBtn(task)}>
                 <Image src={ArrowBtn} alt="view more" style={{ width: 15, height: 12 }} />
@@ -44,6 +44,7 @@ export default function Todo() {
           </div>
         ))}
       </div>
+
       <Modal>
         {viewTask && selectedTask && (
           <div>
