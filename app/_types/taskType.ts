@@ -1,10 +1,14 @@
 export interface Task {
-  id: number
-  title: string
-  detail: string
+  todo_id: number
+  todo_title: string
+  todo_detail: string
+  user_id: string
 }
 
-export interface TaskState {
+export type TodoState = {
   tasks: Task[]
-  addTask: (title: string, detail: string) => void
+  fetchTasks: () => Promise<void>
+  createTask: (title: string, detail: string, userId: string) => Promise<void>
+  editTask: (id: number, title: string, detail: string) => Promise<void>
+  deleteTask: (id: number) => Promise<void>
 }
