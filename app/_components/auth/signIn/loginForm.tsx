@@ -1,9 +1,10 @@
 'use client'
 import { FormEvent, useState } from 'react'
 import { login } from './actions'
-import Image from 'next/image'
-import googleIcon from '@/public/icons/googleIcon.png'
 import { createClient } from '@/_utils/supabase/client'
+
+import Image from 'next/image'
+import googleIcon from '@/public/icons/google.png'
 
 type SignupForm = {
   email: string

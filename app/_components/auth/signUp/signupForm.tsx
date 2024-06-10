@@ -1,17 +1,14 @@
 'use client'
 import { FormEvent, useState } from 'react'
 import { signup } from './actions'
-import Image from 'next/image'
-import googleIcon from '@/public/icons/googleIcon.png'
 import { createClient } from '@/_utils/supabase/client'
+import { SigninFormProps } from '@/_types/userType'
 
-type SignupForm = {
-  email: string
-  password: string
-}
+import Image from 'next/image'
+import googleIcon from '@/public/icons/google.png'
 
 export default function SignupForm() {
-  const [form, setForm] = useState<SignupForm>({
+  const [form, setForm] = useState<SigninFormProps>({
     email: '',
     password: '',
   })
@@ -34,7 +31,7 @@ export default function SignupForm() {
 
   const validatePassword = (): boolean => {
     if (!passwordRegEx.test(form.password)) {
-      setPasswordErr('비밀번호 양식에 맞게 다시 작성해주세요.')
+      setPasswordErr('비밀번호는 최소 8자 이상 작성해주세요')
       return false
     } else {
       setPasswordErr('')
@@ -90,7 +87,7 @@ export default function SignupForm() {
           type="password"
           value={form.password}
           onChange={e => setForm({ ...form, password: e.target.value })}
-          placeholder="Must have at least 8 characters"
+          placeholder="********"
           onBlur={validatePassword}
           required
         />

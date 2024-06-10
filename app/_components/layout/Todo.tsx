@@ -1,13 +1,17 @@
 'use client'
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
 import Modal from '@/common/modal/Modal'
 import { useViewTaskModalState, useModalActions, useEditTaskModalState } from '@/store/useModalState'
 import TaskForm from '@/common/modal/TaskForm'
-import { Task, useTaskStore } from '@/store/useTaskStore'
+import { useTaskStore } from '@/store/useTaskStore'
+import { Task } from '@/_types/taskType'
 
-import X from '@/public/icons/x.png'
+import Image from 'next/image'
 import ArrowBtn from '@/public/icons/arrow2.png'
+import RemoveIcon from '@/public/icons/trashcan.png'
+import EditIcon from '@/public/icons/editicon.png'
+
+
 
 export default function Todo() {
   const viewTask = useViewTaskModalState()
@@ -49,28 +53,44 @@ export default function Todo() {
   }
 
   return (
-    <div className="relative ml-[10px] overflow-auto z-0 w-100% container h-100%">
-      <p>Today</p>
-      <div className="border-b-4 border-lightGray/30 my-[1%]">Tasks</div>
-      <div className="border-b-4 border-lightGray">
-        <button onClick={addTaskBtn}>+ Add new tasks</button>
+    <div className="relative overflow-auto z-0 w-full container h-full px-[15px]">
+      <div className="text-[30px] font-bold border-b-4 border-lightGray py-[12px]">Today</div>
+
+      <div className="border-b-4 border-lightGray px-[4px] py-[4px]">
+        <button
+          onClick={addTaskBtn}
+          className="cursor-pointer bg-gray-100 hover:bg-gray-200 active:bg-gray-200 focus:outline-none rounded-lg px-[10px] py-[4px] w-full flex"
+        >
+          + Add new tasks
+        </button>
       </div>
-      <div className="">
+
+      <div className="relative ">
         {tasks.map(task => (
-          <div key={task.todo_id} className="border-b-4 border-lightGray/30">
-            <div className="flex justify-between">
-              <div>{task.todo_title}</div>
-              <button onClick={() => viewTaskBtn(task)}>
-                <Image src={ArrowBtn} alt="view more" style={{ width: 15, height: 12 }} />
-              </button>
-            </div>
+          <div key={task.todo_id} className="border-b-4 border-lightGray/30 px-[4px] py-[4px] w-full">
+            <button onClick={() => viewTaskBtn(task)} className="flex items-center justify-between w-full">
+              <div className="px-[10px] py-[4px] w-full cursor-pointer hover:bg-gray-100 active:bg-gray-100 focus:outline-none rounded-lg">
+                <div className="flex items-center justify-between">
+                  <input type="checkbox" className="absolute left-0 ml-[10px]" />
+                  <div className="flex items-center px-[20px]">
+                    <div className="truncate">{task.todo_title}</div>
+                    <Image
+                      src={ArrowBtn}
+                      alt="view more"
+                      style={{ width: 15, height: 12 }}
+                      className="absolute right-0 mr-[10px]"
+                    />
+                  </div>
+                </div>
+              </div>
+            </button>
           </div>
         ))}
       </div>
 
       <Modal>
         {viewTask && selectedTask ? (
-          <div>
+          <div className="">
             {editTask ? (
               <TaskForm
                 initialTitle={selectedTask.todo_title}
@@ -78,15 +98,27 @@ export default function Todo() {
                 taskId={selectedTask.todo_id}
               />
             ) : (
-              <div>
-                <h2>{selectedTask.todo_title}</h2>
-                <p>{selectedTask.todo_detail}</p>
-                <button onClick={() => deleteTaskBtn(selectedTask.todo_id)}>
-                  <Image src={X} alt="delete button" style={{ width: 15, height: 12 }} />
-                </button>
-                <button onClick={editTaskBtn}>
-                  <Image src={ArrowBtn} alt="edit button" style={{ width: 15, height: 12 }} />
-                </button>
+              <div className="">
+                <div className="">
+                  <div className="w-full h-10 border-b-4 py-[8px]">{selectedTask.todo_title}</div>
+                  <div className="h-full pt-[8px]">{selectedTask.todo_detail}</div>
+                </div>
+
+                <div className="absolute bottom-0 h-[60px] w-full flex justify-between items-center">
+                  <button
+                    onClick={() => deleteTaskBtn(selectedTask.todo_id)}
+                    className="relative h-full bg-gray-200 hover:bg-gray-300 active:bg-gray-300 rounded-md w-1/2 mr-[5px]"
+                  >
+                    <Image src={RemoveIcon} alt="delete button" style={{ width: 22, height: 27.5 }} className="insetcenter" />
+                  </button>
+
+                  <button
+                    onClick={editTaskBtn}
+                    className="relative h-full  bg-gray-200 hover:bg-gray-300 active:bg-gray-300 rounded-md w-1/2 "
+                  >
+                    <Image src={EditIcon} alt="edit button" style={{ width: 30, height: 30 }} className="insetcenter" />
+                  </button>
+                </div>
               </div>
             )}
           </div>

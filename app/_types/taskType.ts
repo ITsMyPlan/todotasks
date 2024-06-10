@@ -12,3 +12,9 @@ export type TodoState = {
   editTask: (id: number, title: string, detail: string) => Promise<void>
   deleteTask: (id: number) => Promise<void>
 }
+
+export interface TaskFormProps {
+  initialTitle?: string
+  initialDetail?: string
+  taskId?: number | null
+}
