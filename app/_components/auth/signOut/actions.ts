@@ -6,5 +6,5 @@ export default async function logout() {
   if (error) {
     console.error('로그아웃 중 오류 발생:', error.message)
   }
-  console.log('로그아웃!! 쿠키 삭제됨')
+   window.location.replace('/signin')
 }

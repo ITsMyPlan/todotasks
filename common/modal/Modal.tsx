@@ -12,7 +12,7 @@ const Modal = ({ children }: ModalProps) => {
   if (!addTaskOn && !viewTaskOn) return null
 
   return (
-    <div className="w-1/2 max-sm:w-full absolute min-w-80 h-full bg-gray-100 font-bold z-50 bottom-0 right-0 text-neutral-500 rounded-2xl  px-[27px] py-[22px]">
+    <div className="max-sm:w-full min-w-80 absolute h-full bg-gray-100 font-bold z-50 bottom-0 right-0 text-neutral-500 rounded-2xl  px-[27px] py-[22px]">
       <div className="relative w-full h-full">
         <div className="flex justify-between border-b-4 px-[2px] pb-[2px]">
           <div className="font-bold text-[30px]">Task</div>

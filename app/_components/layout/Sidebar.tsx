@@ -23,7 +23,7 @@ const Sidebar = () => {
   const email = user ? user.email : null
 
   return (
-    <div className="max-sm:hidden relative box-border bg-gray-100 font-bold text-neutral-500 rounded-2xl md:w-[280px] min-w-64 px-[27px] py-[22px]">
+    <div className="max-md:hidden relative box-border bg-gray-100 font-bold text-neutral-500 rounded-2xl min-w-80 px-[27px] py-[22px]">
       <div className="border-b-4  mb-[14px] pb-[18px]">
         <button type="button" className="flex items-center">
           <div className="max-w-max mr-[18px]">
@@ -36,29 +36,31 @@ const Sidebar = () => {
       <div className="border-b-4">
         <div className="">List</div>
         <div className="my-[14px] text-stone-900">
-          <button type="button" className="flex items-center mb-[14px] relative w-full">
-            <div className="max-w-max mr-[18px]">
-              <Image src={TodayIcon} alt="userimg" style={{ width: 20, height: 11.4 }} />
-            </div>
-            <div>
-              <Link href="/today">Today</Link>
-            </div>
-            <div className="absolute right-0">
-              <Image src={ArrowBtn} alt="view more" style={{ width: 7, height: 14 }} />
-            </div>
-          </button>
+          <Link href="/today">
+            <button type="button" className="flex items-center mb-[14px] relative w-full">
+              <div className="max-w-max mr-[18px]">
+                <Image src={TodayIcon} alt="userimg" style={{ width: 20, height: 11.4 }} />
+              </div>
 
-          <button type="button" className="flex items-center relative w-full">
-            <div className="max-w-max mr-[18px]">
-              <Image src={CalendarIcon} alt="userimg" style={{ width: 20, height: 20 }} />
-            </div>
-            <div>
-              <Link href="/calendar">Calendar</Link>
-            </div>
-            <div className="absolute right-0">
-              <Image src={ArrowBtn} alt="view more" style={{ width: 7, height: 14 }} />
-            </div>
-          </button>
+              <div>Today</div>
+
+              <div className="absolute right-0">
+                <Image src={ArrowBtn} alt="view more" style={{ width: 7, height: 14 }} />
+              </div>
+            </button>{' '}
+          </Link>
+
+          <Link href="/calendar">
+            <button type="button" className="flex items-center relative w-full">
+              <div className="max-w-max mr-[18px]">
+                <Image src={CalendarIcon} alt="userimg" style={{ width: 20, height: 20 }} />
+              </div>
+              <div>Calendar</div>
+              <div className="absolute right-0">
+                <Image src={ArrowBtn} alt="view more" style={{ width: 7, height: 14 }} />
+              </div>
+            </button>
+          </Link>
         </div>
       </div>
 

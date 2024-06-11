@@ -90,7 +90,7 @@ export default function Todo() {
 
       <Modal>
         {viewTask && selectedTask ? (
-          <div className="">
+          <div className="max-sm:w-full min-w-80">
             {editTask ? (
               <TaskForm
                 initialTitle={selectedTask.todo_title}
@@ -109,7 +109,12 @@ export default function Todo() {
                     onClick={() => deleteTaskBtn(selectedTask.todo_id)}
                     className="relative h-full bg-gray-200 hover:bg-gray-300 active:bg-gray-300 rounded-md w-1/2 mr-[5px]"
                   >
-                    <Image src={RemoveIcon} alt="delete button" style={{ width: 22, height: 27.5 }} className="insetcenter" />
+                    <Image
+                      src={RemoveIcon}
+                      alt="delete button"
+                      style={{ width: 22, height: 27.5 }}
+                      className="insetcenter"
+                    />
                   </button>
 
                   <button

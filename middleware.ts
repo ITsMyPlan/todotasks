@@ -3,7 +3,7 @@ import { updateSession } from '@/_utils/supabase/middleware'
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 
 // 로그인해야 접근할 수 있는 루트[]
-const protectedRoutes = ['/today', '/calendar']
+const protectedRoutes = ['/today', '/calendar', '/']
 
 export async function middleware(request: NextRequest) {
   const response = await updateSession(request)
