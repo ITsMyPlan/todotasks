@@ -14,16 +14,16 @@ import ArrowBtn from '@/public/icons/arrow1.png'
 
 const Sidebar = () => {
   const user = useUserStore(state => state.user)
-  const fetchUser = useUserStore(state => state.fetchUser)
+  const checkisLogin = useUserStore(state => state.checkisLogin)
 
   useEffect(() => {
-    fetchUser()
-  }, [fetchUser])
+    checkisLogin()
+  }, [checkisLogin])
 
   const email = user ? user.email : null
 
   return (
-    <div className="max-sm:hidden relative box-border bg-gray-100 font-bold text-neutral-500 rounded-2xl w-[280px] min-w-64 px-[27px] py-[22px]">
+    <div className="max-sm:hidden relative box-border bg-gray-100 font-bold text-neutral-500 rounded-2xl md:w-[280px] min-w-64 px-[27px] py-[22px]">
       <div className="border-b-4  mb-[14px] pb-[18px]">
         <button type="button" className="flex items-center">
           <div className="max-w-max mr-[18px]">

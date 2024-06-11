@@ -1,5 +1,7 @@
 export type UserState = {
+  checkisLogin: any
   user: any
+  isLogin: boolean
   fetchUser: () => Promise<void>
 }
 

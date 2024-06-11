@@ -45,7 +45,7 @@ const TaskForm = ({ initialTitle = '', initialDetail = '', taskId = null }: Task
 
   return (
     <form onSubmit={handleUpdateTask}>
-      <div className="h-full">
+      <div className="h-full ">
         <div className="border-b-4 py-[8px]">
           <input
             type="text"
@@ -64,7 +64,7 @@ const TaskForm = ({ initialTitle = '', initialDetail = '', taskId = null }: Task
             minLength={0}
             maxLength={150}
             onChange={e => setDetail(e.target.value)}
-            className="resize-none border focus:outline-none focus:shadow-outline outline-none w-full h-full bg-transparent"
+            className="resize-none border focus:outline-none outline-none w-full h-full bg-transparent overflow-hidden"
           />
         </div>
       </div>
