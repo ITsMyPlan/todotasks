@@ -1,7 +1,7 @@
 'use client'
 
-import LoginForm from '@/_components/auth/signin/LoginForm'
-import SignupForm from '@/_components/auth/signup/SignupForm'
+import LoginForm from '@/_components/auth/signIn/LoginForm'
+import SignupForm from '@/_components/auth/signUp/SignupForm'
 import { useState } from 'react'
 
 export default function Signin() {

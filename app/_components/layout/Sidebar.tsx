@@ -2,14 +2,14 @@
 import Link from 'next/link'
 import { useUserStore } from '@/store/useUserStore'
 import { useEffect } from 'react'
-import logout from '@/_components/auth/signout/actions'
+import logout from '@/_components/auth/signOut/actions'
 
 import Image from 'next/image'
 import UnknownUser from '@/public/icons/unknown.png'
 import TodayIcon from '@/public/icons/todayicon.png'
 import CalendarIcon from '@/public/icons/calendaricon.png'
 import AddIcon from '@/public/icons/blackadd.png'
-import SignoutIcon from '@/public/icons/signouticon.png'
+import SignoutIcon from '@/public/icons/signoutIcon.png'
 import ArrowBtn from '@/public/icons/arrow1.png'
 
 const Sidebar = () => {
