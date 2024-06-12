@@ -32,24 +32,24 @@ export default function Todo() {
 
   const addTaskBtn = () => {
     setSelectedTask(null)
-    changeModalState('add')
+    changeModalState('add', true)
   }
 
   const viewTaskBtn = (task: Task) => {
     console.log(task)
     setSelectedTask(task)
     if (!viewTask) {
-      changeModalState('view')
+      changeModalState('view', true)
     }
   }
   const deleteTaskBtn = async (id: number) => {
     await deleteTask(id)
     setSelectedTask(null)
-    changeModalState('view')
+    changeModalState('view', false)
   }
 
   const editTaskBtn = () => {
-    changeModalState('edit')
+    changeModalState('edit', true)
   }
 
   return (
@@ -90,7 +90,7 @@ export default function Todo() {
 
       <Modal>
         {viewTask && selectedTask ? (
-          <div className="max-sm:w-full min-w-80">
+          <div className="max-sm:w-full min-w-80 bg-transparent resize-none h-80">
             {editTask ? (
               <TaskForm
                 initialTitle={selectedTask.todo_title}

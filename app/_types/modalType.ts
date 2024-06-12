@@ -6,7 +6,7 @@ export interface ModalState {
   delete: boolean
   edit: boolean
   actions: {
-    changeModalState: (type: TaskType) => void
+    changeModalState: (type: TaskType, value?: boolean) => void
   }
 }
 export interface ModalProps {
