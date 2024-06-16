@@ -8,7 +8,7 @@ const useModalStore = create<ModalState>(set => ({
   edit: false,
   actions: {
     changeModalState: (type: TaskType, value?: boolean) => {
-     set(state => ({ ...state, [type]: value !== undefined ? value : !state[type] }))
+      set(state => ({ ...state, [type]: value !== undefined ? value : !state[type] }))
     },
   },
 }))

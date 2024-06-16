@@ -11,9 +11,9 @@ export default function Signin() {
     setIsClicked(true)
   }
 
- function goSignin() {
-   setIsClicked(false)
- }
+  function goSignin() {
+    setIsClicked(false)
+  }
   return (
     <div className="ml-[10px] overflow-auto container w-11/12 md:w-full h-full">
       <div className="text-[30px] font-bold border-b-4 border-gray-200 py-[12px] pl-[10px]">Welcome!</div>

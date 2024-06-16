@@ -36,7 +36,7 @@ const Sidebar = () => {
       <div className="border-b-4">
         <div className="">List</div>
         <div className="my-[14px] text-stone-900">
-          <Link href="/today">
+          <Link href="/">
             <button type="button" className="flex items-center mb-[14px] relative w-full">
               <div className="max-w-max mr-[18px]">
                 <Image src={TodayIcon} alt="userimg" style={{ width: 20, height: 11.4 }} />
@@ -74,7 +74,7 @@ const Sidebar = () => {
         </button>
       </div>
 
-      <div className="absolute w-[200px] max-h-[600px] bottom-0 pb-[22px]">
+      <div className="w-full absolute bottom-0 pr-[58px] max-h-[600px] pb-[22px]">
         <div className="border-t-4 pt-[22px]">
           {user ? (
             <button type="button" onClick={logout} className="flex items-center">

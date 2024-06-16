@@ -6,5 +6,5 @@ export default async function logout() {
   if (error) {
     console.error('로그아웃 중 오류 발생:', error.message)
   }
-   window.location.replace('/signin')
+  window.location.replace('/signin')
 }

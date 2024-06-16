@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { createClient } from '@/_utils/supabase/client'
 import { UserState } from '@/_types/userType'
 
-export const useUserStore = create<UserState>((set) => ({
+export const useUserStore = create<UserState>(set => ({
   user: null,
   isLogin: false,
   fetchUser: async () => {
@@ -16,20 +16,20 @@ export const useUserStore = create<UserState>((set) => ({
     }
     set({ user })
   },
-  checkisLogin: async() => {
-     const supabase = createClient()
-     const {
-       data: { session },
-       error,
-     } = await supabase.auth.getSession()
-     if (error) {
-       console.error('Check isLogin ERROR:', error)
-     }
-     if(session) {
+  checkisLogin: async () => {
+    const supabase = createClient()
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.getSession()
+    if (error) {
+      console.error('Check isLogin ERROR:', error)
+    }
+    if (session) {
       set({ isLogin: true })
       await useUserStore.getState().fetchUser()
-     } else {
+    } else {
       set({ isLogin: false })
-     }
-  }
- }))
+    }
+  },
+}))

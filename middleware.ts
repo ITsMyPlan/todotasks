@@ -3,7 +3,7 @@ import { updateSession } from '@/_utils/supabase/middleware'
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 
 // 로그인해야 접근할 수 있는 루트[]
-const protectedRoutes = ['/today', '/calendar', '/']
+const protectedRoutes = ['/', '/calendar']
 
 export async function middleware(request: NextRequest) {
   const response = await updateSession(request)
@@ -44,7 +44,10 @@ export async function middleware(request: NextRequest) {
     },
   )
 
-  const { data: { session }, error} = await supabase.auth.getSession()
+  const {
+    data: { session },
+    error,
+  } = await supabase.auth.getSession()
 
   if (request.nextUrl.pathname === '/signin' && session) {
     const url = request.nextUrl.clone()
@@ -52,8 +55,8 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
-// /today, /calendar에 로그인 아닌 상태로 접근하면 /login으로 리다이렉션되게 해뒀는데
-// 그냥 냅다 이동해 버려서 사용자가 어리둥절 할 수 있으니 이후 로그인하라는 지시가 있는 모달 달기
+  // /, /calendar에 로그인 아닌 상태로 접근하면 /signin으로 사전에 차단
+  // 냅다 이동해 버려서 사용자가 어리둥절 할 수 있으니 이후 로그인하라는 지시가 있는 모달 달기
   if (protectedRoutes.includes(request.nextUrl.pathname)) {
     if (!session) {
       const url = request.nextUrl.clone()
@@ -61,8 +64,8 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(url)
     }
   }
-  if(error) {
-    console.error("root middleware error: ", error)
+  if (error) {
+    console.error('root middleware error: ', error)
   }
   return response
 }

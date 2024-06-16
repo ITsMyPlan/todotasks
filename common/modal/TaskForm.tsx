@@ -7,7 +7,6 @@ import { TaskFormProps } from '@/_types/taskType'
 import Image from 'next/image'
 import AddIconWhite from '@/public/icons/whiteadd.png'
 
-
 const TaskForm = ({ initialTitle = '', initialDetail = '', taskId = null }: TaskFormProps) => {
   const { changeModalState } = useModalActions()
 
@@ -29,7 +28,6 @@ const TaskForm = ({ initialTitle = '', initialDetail = '', taskId = null }: Task
       alert('please write a Task name')
       return
     }
-
     if (taskId) {
       await editTask(taskId, title, detail)
       changeModalState('edit', false)
