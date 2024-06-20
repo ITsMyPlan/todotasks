@@ -13,15 +13,23 @@ export default function LoginForm() {
     password: '',
   })
 
+  // 로그인 시도했는데 db에 해당 계정이 없는 경우, 서버 메세지를 보고 alert로 
+  // "일치하는 계정이 없습니다. 다시 작성해주세요. "
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    if (form.email && form.password) {
+    if (!form.email) {
+alert('이메일을 다시 작성해주세요.')
+    } else if (!form.password) {
+alert('틀린 비밀번호입니다.')
+    } else {
       const formData = new FormData()
       formData.append('email', form.email)
       formData.append('password', form.password)
-      await login(formData)
-    } else {
-      alert('이메일과 패스워드 모두 작성해주세요.')
+     const response = await login(formData)
+      if(response && response.error) {
+        alert('일치하는 계정이 없습니다. 다시 작성해주세요. ')
+      }
     }
   }
 
@@ -72,6 +80,7 @@ export default function LoginForm() {
             value={form.password}
             onChange={e => setForm({ ...form, password: e.target.value })}
             placeholder="Password"
+            minLength={8}
             className="w-full font-semibold border-solid border-2 rounded border-stone-700 mt-[18px] px-[10px] py-[10px]"
             required
           />

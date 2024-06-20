@@ -16,6 +16,7 @@ export async function signup(formData: FormData) {
 
   if (error) {
     console.error('signup error:', error.message)
+    return {error: error.message}
   }
 
   revalidatePath('/', 'layout')

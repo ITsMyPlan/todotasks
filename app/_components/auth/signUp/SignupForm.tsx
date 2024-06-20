@@ -54,7 +54,10 @@ export default function SignupForm() {
       const formData = new FormData()
       formData.append('email', form.email)
       formData.append('password', form.password)
-      await signup(formData)
+     const response = await signup(formData)
+     if(response && response.error){
+      alert("이미 존재하는 계정입니다.")
+     }
     }
   }
 
@@ -98,6 +101,7 @@ export default function SignupForm() {
           value={form.password}
           onChange={e => setForm({ ...form, password: e.target.value })}
           placeholder="Password"
+          minLength={8}
           autoComplete="off"
           className="w-full font-semibold border-solid border-2 rounded border-stone-700 mt-[18px] px-[10px] py-[10px]"
           required
