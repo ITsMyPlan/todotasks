@@ -17,18 +17,29 @@ const Todo = () => {
   const editTask = useEditTaskModalState()
 
   const deleteTask = useTaskStore(state => state.deleteTask)
-
   const { changeModalState } = useModalActions()
 
+  // tasks fetching (whole task)
+  // const tasks = useTaskStore(state => state.tasks)
+  // const fetchTaskAll = useTaskStore(state => state.fetchTaskAll)
+
+  // useEffect(() => {
+  //   fetchTaskAll()
+  // }, [fetchTaskAll])
+
+  // tasks fetching (today only)
   const tasks = useTaskStore(state => state.tasks)
-  const fetchTasks = useTaskStore(state => state.fetchTasks)
+  const fetchTaskToday = useTaskStore(state => state.fetchTaskToday)
 
   useEffect(() => {
-    fetchTasks()
-  }, [fetchTasks])
+    fetchTaskToday()
+  }, [fetchTaskToday])
 
+  // task crud를 위한 selectedTask, 체크박스 선택을 위한 checkedTask
   const [selectedTask, setSelectedTask] = useState<Task | null>(null)
+  const [checkedTask, setCheckedTask] = useState<{ [key: string]: boolean }>({})
 
+  // crud 버튼 함수 (addTaskBtn, viewTaskBtn, deleteTaskBtn, editTaskBtn)
   const addTaskBtn = useCallback(() => {
     setSelectedTask(null)
     changeModalState('add', true)
@@ -57,9 +68,24 @@ const Todo = () => {
     changeModalState('edit', true)
   }, [changeModalState])
 
+  // checkbox checking
+  const checkingBox = (taskId: string, checked: boolean) => {
+    setCheckedTask(prev => ({
+      ...prev,
+      [taskId]: checked,
+    }))
+  }
+
+  // checkbox removing
+  const checkboxDeleteBtn = async () => {
+    const toDelete = Object.keys(checkedTask).filter(taskId => checkedTask[taskId])
+    await Promise.all(toDelete.map(taskId => deleteTask(Number(taskId))))
+    setCheckedTask({})
+  }
+
   return (
-    <div className="relative overflow-auto z-0 w-full container h-full px-[15px]">
-      <div className="text-[30px] font-bold border-b-4 border-lightGray py-[12px]">Today</div>
+    <div className="relative overflow-auto z-0 w-full container h-full mx-[15px]">
+      <div className="flex text-[30px] font-bold border-b-4 border-lightGray py-[12px]">Today</div>
 
       <div className="border-b-4 border-lightGray px-[4px] py-[4px]">
         <button
@@ -72,8 +98,19 @@ const Todo = () => {
 
       <div className="relative ">
         {tasks.map(task => (
-          <TodoItem key={task.todo_id} task={task} viewTaskBtn={viewTaskBtn} />
+          <TodoItem
+            key={task.todo_id}
+            task={task}
+            viewTaskBtn={viewTaskBtn}
+            checkTask={checkingBox}
+            checked={!!checkedTask[task.todo_id.toString()]}
+          />
         ))}
+      </div>
+      <div className="absolute bottom-0 w-full ">
+        <button onClick={checkboxDeleteBtn} className=" bg-gray-200 hover:bg-gray-300 active:bg-gray-300 rounded-md">
+          <Image src={RemoveIcon} alt="delete button" style={{ width: 22, height: 27.5 }} className="" />
+        </button>
       </div>
 
       <Modal>

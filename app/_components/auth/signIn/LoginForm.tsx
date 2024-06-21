@@ -6,36 +6,34 @@ import { createClient } from '@/_utils/supabase/client'
 import Image from 'next/image'
 import googleIcon from '@/public/icons/google.png'
 import { SigninFormProps } from '@/_types/userType'
+import { redirect } from 'next/navigation'
 
 export default function LoginForm() {
   const [form, setForm] = useState<SigninFormProps>({
     email: '',
     password: '',
   })
-
-  // 로그인 시도했는데 db에 해당 계정이 없는 경우, 서버 메세지를 보고 alert로 
-  // "일치하는 계정이 없습니다. 다시 작성해주세요. "
-
+  
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     if (!form.email) {
-alert('이메일을 다시 작성해주세요.')
+      alert('이메일을 다시 작성해주세요.')
     } else if (!form.password) {
-alert('틀린 비밀번호입니다.')
+      alert('틀린 비밀번호입니다.')
     } else {
       const formData = new FormData()
       formData.append('email', form.email)
       formData.append('password', form.password)
-     const response = await login(formData)
-      if(response && response.error) {
+      const response = await login(formData)
+      if (response && response.error) {
         alert('일치하는 계정이 없습니다. 다시 작성해주세요. ')
       }
     }
   }
 
-  const handleGoogleLogin = () => {
+  const handleGoogleLogin = async () => {
     const supabase = createClient()
-    supabase.auth.signInWithOAuth({
+    const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
         queryParams: {
@@ -44,6 +42,9 @@ alert('틀린 비밀번호입니다.')
         },
       },
     })
+    if (error) {
+      redirect('/signin')
+    }
   }
 
   return (

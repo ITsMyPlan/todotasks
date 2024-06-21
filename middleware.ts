@@ -56,7 +56,6 @@ export async function middleware(request: NextRequest) {
   }
 
   // /, /calendar에 로그인 아닌 상태로 접근하면 /signin으로 사전에 차단
-  // 냅다 이동해 버려서 사용자가 어리둥절 할 수 있으니 이후 로그인하라는 지시가 있는 모달 달기
   if (protectedRoutes.includes(request.nextUrl.pathname)) {
     if (!session) {
       const url = request.nextUrl.clone()

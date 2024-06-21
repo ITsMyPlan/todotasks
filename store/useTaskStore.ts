@@ -4,12 +4,33 @@ import { TodoState } from '@/_types/taskType'
 
 export const useTaskStore = create<TodoState>(set => ({
   tasks: [],
-  fetchTasks: async () => {
+  fetchTaskAll: async () => {
     const supabase = createClient()
     const { data, error } = await supabase.from('todolist').select()
 
     if (error) {
-      console.error('Fetching todolist ERROR:', error)
+      console.error('Fetching whole task ERROR:', error)
+    } else {
+      set({ tasks: data })
+    }
+  },
+  fetchTaskToday: async () => {
+    const startDayTime = new Date()
+    startDayTime.setHours(0, 0, 0, 0)
+
+    const endDayTime = new Date()
+    endDayTime.setHours(23, 59, 59, 999)
+
+    const supabase = createClient()
+    const { data, error } = await supabase
+      .from('todolist')
+      .select('*')
+      .gte('created_at', startDayTime.toISOString())
+      .lte('created_at', endDayTime.toISOString())
+
+    if (error) {
+      console.error('Fetching today task ERROR:', error)
+
     } else {
       set({ tasks: data })
     }

@@ -7,7 +7,8 @@ export interface Task {
 
 export type TodoState = {
   tasks: Task[]
-  fetchTasks: () => Promise<void>
+  fetchTaskAll: () => Promise<void>
+  fetchTaskToday: () => Promise<void>
   createTask: (title: string, detail: string, userId: string) => Promise<void>
   editTask: (id: number, title: string, detail: string) => Promise<void>
   deleteTask: (id: number) => Promise<void>

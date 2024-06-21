@@ -12,6 +12,7 @@ export async function GET(request: Request) {
     if (!error) {
       // `${origin}${next}`로 리다이렉션을 시도했으나 oAuth 로그인 직후 '/signin'에 머물러있는 문제 발견
       //  `${origin}/`나 미들웨어 건드려도 문제해결이 안되서 하드코딩으로 일단 해결
+      // return NextResponse.redirect('http://localhost:3000')
       return NextResponse.redirect('https://main.d2kkit0z8d505j.amplifyapp.com/')
       // return NextResponse.redirect(`${origin}${next}`)
     }
