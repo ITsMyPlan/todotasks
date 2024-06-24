@@ -6,11 +6,12 @@ import { useViewTaskModalState, useModalActions, useEditTaskModalState } from '@
 import TaskForm from '@/common/modal/TaskForm'
 import { useTaskStore } from '@/store/useTaskStore'
 import { Task } from '@/_types/taskType'
+import TodoItem from './TodoItem'
 
 import Image from 'next/image'
 import RemoveIcon from '@/public/icons/trashcan.png'
 import EditIcon from '@/public/icons/editicon.png'
-import TodoItem from './TodoItem'
+import AddIcon from '@/public/icons/blackadd.png'
 
 const Todo = () => {
   const viewTask = useViewTaskModalState()
@@ -50,11 +51,22 @@ const Todo = () => {
       setSelectedTask(task)
       if (!viewTask) {
         changeModalState('view', true)
-        console.log(task)
       }
     },
     [viewTask, changeModalState],
   )
+
+  useEffect(() => {
+    if (viewTask || editTask) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [viewTask, editTask])
+
   const deleteTaskBtn = useCallback(
     async (id: number) => {
       await deleteTask(id)
@@ -84,19 +96,32 @@ const Todo = () => {
   }
 
   return (
-    <div className="relative overflow-auto z-0 w-full container h-full mx-[15px]">
-      <div className="flex text-[30px] font-bold border-b-4 border-lightGray py-[12px]">Today</div>
+    <div className=" relative z-0 w-full container h-full ">
+      <div className="text-[30px] font-bold border-b-4 py-[12px]">
+        <div className="flex items-center justify-between px-[5px]">
+          Today
+          <button onClick={checkboxDeleteBtn}>
+            <Image
+              src={RemoveIcon}
+              alt="delete button"
+              style={{ width: 22, height: 27.5 }}
+              className="  hover:bg-gray-200 active:bg-gray-300 "
+            />
+          </button>
+        </div>
+      </div>
 
-      <div className="border-b-4 border-lightGray px-[4px] py-[4px]">
+      <div className="border-b-4 px-[4px] py-[4px]">
         <button
           onClick={addTaskBtn}
-          className="cursor-pointer bg-gray-100 hover:bg-gray-200 active:bg-gray-200 focus:outline-none rounded-lg px-[10px] py-[4px] w-full flex"
+          className="items-center cursor-pointer bg-gray-100 hover:bg-gray-200 active:bg-gray-200 focus:outline-none rounded-lg px-[10px] py-[4px] w-full flex"
         >
-          + Add new tasks
+          <Image src={AddIcon} alt="add button" style={{ width: 20, height: 20 }} className="mr-[8px]" />
+          Add new tasks
         </button>
       </div>
 
-      <div className="relative ">
+      <div className="relative">
         {tasks.map(task => (
           <TodoItem
             key={task.todo_id}
@@ -107,15 +132,10 @@ const Todo = () => {
           />
         ))}
       </div>
-      <div className="absolute bottom-0 w-full ">
-        <button onClick={checkboxDeleteBtn} className=" bg-gray-200 hover:bg-gray-300 active:bg-gray-300 rounded-md">
-          <Image src={RemoveIcon} alt="delete button" style={{ width: 22, height: 27.5 }} className="" />
-        </button>
-      </div>
 
       <Modal>
         {viewTask && selectedTask ? (
-          <div className="max-sm:w-full min-w-80 bg-transparent resize-none h-80">
+          <div className="max-sm:w-full min-w-full bg-transparent resize-none h-80 ">
             {editTask ? (
               <TaskForm
                 initialTitle={selectedTask.todo_title}
@@ -123,12 +143,13 @@ const Todo = () => {
                 taskId={selectedTask.todo_id}
               />
             ) : (
-              <div>
-                <div>
-                  <div className="w-full h-10 border-b-4 py-[8px]">{selectedTask.todo_title}</div>
-                  <div className="h-full pt-[8px]">{selectedTask.todo_detail}</div>
+              <div className="w-full h-full">
+                <div className="border-b-4">
+                  <div className="w-full h-full py-[8px] break-all">{selectedTask.todo_title}</div>
                 </div>
-
+                <div className="border-b-4 h-full">
+                  <div className="w-full h-full pt-[8px] py-[8px] break-all">{selectedTask.todo_detail}</div>
+                </div>
                 <div className="absolute bottom-0 h-[60px] w-full flex justify-between items-center">
                   <button
                     onClick={() => deleteTaskBtn(selectedTask.todo_id)}

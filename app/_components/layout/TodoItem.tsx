@@ -8,35 +8,42 @@ interface TodoItemProps {
   task: Task
   viewTaskBtn: (task: Task) => void
   checked: boolean
-  checkTask: (taskId: string, checked: boolean) => void 
+  checkTask: (taskId: string, checked: boolean) => void
 }
 
 const TodoItem: React.FC<TodoItemProps> = ({ task, viewTaskBtn, checked, checkTask }) => {
-
   const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
     checkTask(task.todo_id.toString(), e.target.checked)
   }
 
   return (
     <>
-      <div className="border-b-4 px-[4px] py-[4px] w-full">
-        <input type="checkbox" name="task" onChange={handleCheck} checked={checked} className="absolute left-0 ml-[10px]" />
-        <button onClick={() => viewTaskBtn(task)} className="flex items-center justify-between w-full">
-          <div className="px-[10px] py-[4px] w-full cursor-pointer hover:bg-gray-100 active:bg-gray-100 focus:outline-none rounded-lg">
-            <div className="flex items-center justify-between">
-              {/* <input type="checkbox" name="task" onChange={check} className="absolute left-0 ml-[10px]" /> */}
-              <div className="flex items-center px-[20px]">
-                <div className="truncate">{task.todo_title}</div>
-                <Image
-                  src={ArrowBtn}
-                  alt="view more"
-                  style={{ width: 15, height: 12 }}
-                  className="absolute right-0 mr-[10px]"
-                />
+      <div className="border-b-4 px-[2px] py-[4px] w-full">
+        <div className="flex items-center w-full">
+          <input
+            type="checkbox"
+            name="task"
+            onChange={handleCheck}
+            checked={checked}
+            className="absolute left-0 ml-[14px] appearance-none w-full h-full border-2 border-gray-200 rounded-sm bg-white checked:bg-rose-200 checked:border-0"
+            style={{ width: 20, height: 20 }}
+          />
+          <button onClick={() => viewTaskBtn(task)} className="flex items-center justify-between w-full">
+            <div className="px-[10px] py-[4px] w-full cursor-pointer focus:outline-none rounded-lg">
+              <div className="flex items-center justify-between w-full pl-[20px] pr-[30px]">
+                <div className="flex items-center min-w-0">
+                  <div className="truncate ml-[15px] mx-[4px]">{task.todo_title}</div>
+                  <Image
+                    src={ArrowBtn}
+                    alt="view more"
+                    style={{ width: 15, height: 12 }}
+                    className="absolute right-0 mr-[8px]"
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        </button>
+          </button>
+        </div>
       </div>
     </>
   )

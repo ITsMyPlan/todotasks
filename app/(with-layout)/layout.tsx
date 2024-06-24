@@ -14,7 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="container min-w-96 z-0 flex h-screen px-[21px] py-[22px]">
+        <div className="container relative z-0 flex h-screen px-[21px] py-[22px] sm:space-x-4">
           <Sidebar />
           {children}
         </div>

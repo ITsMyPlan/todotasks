@@ -1,4 +1,4 @@
-import { FormEvent, useState, useEffect } from 'react'
+import { FormEvent, useState, useEffect, useRef } from 'react'
 import { useTaskStore } from '@/store/useTaskStore'
 import { useModalActions } from '@/store/useModalState'
 import { useUserStore } from '@/store/useUserStore'
@@ -25,7 +25,7 @@ const TaskForm = ({ initialTitle = '', initialDetail = '', taskId = null }: Task
   const handleUpdateTask = async (e: FormEvent) => {
     e.preventDefault()
     if (!title || title.length === 0) {
-      alert('please write a Task name')
+      alert('할일 타이틀을 작성해주세요.')
       return
     }
     if (taskId) {
@@ -41,10 +41,26 @@ const TaskForm = ({ initialTitle = '', initialDetail = '', taskId = null }: Task
     setDetail('')
   }
 
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+
+  const textareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setDetail(e.target.value)
+    resizeTextarea()
+  }
+  const resizeTextarea = () => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto' 
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`
+    }
+  }
+  useEffect(() => {
+    resizeTextarea()
+  }, [])
+
   return (
-    <form onSubmit={handleUpdateTask} className="">
-      <div className="h-full">
-        <div className="border-b-4 py-[8px]">
+    <form onSubmit={handleUpdateTask} className="box-border">
+      <div className=" w-full h-full">
+        <div className="box-border border-b-4 py-[8px]">
           <input
             type="text"
             placeholder="Task"
@@ -52,17 +68,19 @@ const TaskForm = ({ initialTitle = '', initialDetail = '', taskId = null }: Task
             minLength={1}
             maxLength={50}
             onChange={e => setTitle(e.target.value)}
-            className="w-full h-[30px] bg-transparent focus:outline-none"
+            className="overflow-auto w-full h-[30px] bg-transparent focus:outline-none"
           />
         </div>
-        <div className="border-b-4 h-full py-[10px]">
+        <div className="border-b-4 w-full h-full py-[10px]">
           <textarea
+            ref={textareaRef}
             placeholder="Description"
             value={detail}
             minLength={0}
             maxLength={150}
-            onChange={e => setDetail(e.target.value)}
-            className="resize-none border focus:outline-none outline-none w-full h-60 bg-transparent overflow-hidden"
+            onChange={textareaChange}
+            className="resize-none border focus:outline-none outline-none w-full h-auto wraptextarea bg-transparent overflow-y-hidden"
+            style={{ height: 'auto' }}
           />
         </div>
       </div>
