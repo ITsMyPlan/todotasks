@@ -6,6 +6,7 @@ import { createClient } from '@/_utils/supabase/client'
 import Image from 'next/image'
 import googleIcon from '@/public/icons/google.png'
 import { SigninFormProps } from '@/_types/userType'
+import { useUserStore } from '@/store/useUserStore'
 import { redirect } from 'next/navigation'
 
 export default function LoginForm() {
@@ -13,7 +14,8 @@ export default function LoginForm() {
     email: '',
     password: '',
   })
-  
+  const checkisLogin = useUserStore(state => state.checkisLogin)
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     if (!form.email) {
@@ -27,6 +29,8 @@ export default function LoginForm() {
       const response = await login(formData)
       if (response && response.error) {
         alert('일치하는 계정이 없습니다. 다시 작성해주세요. ')
+      } else {
+        await checkisLogin()
       }
     }
   }
@@ -36,14 +40,17 @@ export default function LoginForm() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
+        redirectTo: 'http://localhost:3000/auth/callback',
         queryParams: {
           access_type: 'offline',
           prompt: 'consent',
         },
+        // 로그인 성공 후 이동할 URL
       },
     })
     if (error) {
-      redirect('/signin')
+      console.error('OAuth login error:', error.message)
+      redirect('/signin') // OAuth flow error 시 /signin으로 이동
     }
   }
 
