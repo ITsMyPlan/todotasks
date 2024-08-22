@@ -2,10 +2,12 @@
 
 import LoginForm from '@/_components/auth/signIn/LoginForm'
 import SignupForm from '@/_components/auth/signUp/SignupForm'
+import useToggleSidebar from '@/store/useToggleSidebar'
 import { useState } from 'react'
 
 export default function Signin() {
   const [isClicked, setIsClicked] = useState(false)
+  const toggleSidebar = useToggleSidebar(state => state.toggleSidebar)
 
   function goSignup() {
     setIsClicked(true)
@@ -16,7 +18,9 @@ export default function Signin() {
   }
   return (
     <div className="ml-[10px] overflow-auto container w-11/12 md:w-full h-full">
-      <div className="text-[30px] font-bold border-b-4 border-gray-200 py-[12px] pl-[10px]">Welcome!</div>
+      <div className="text-[30px] font-bold border-b-4 border-gray-200 py-[12px] pl-[10px]">
+        <button onClick={toggleSidebar}>Welcome!</button>
+      </div>
       {isClicked === true ? (
         <div className=" my-[20px] w-full flex flex-col justify-center items-center ">
           <SignupForm />

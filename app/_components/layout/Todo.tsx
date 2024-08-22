@@ -12,6 +12,8 @@ import Image from 'next/image'
 import RemoveIcon from '@/public/icons/trashcan.png'
 import EditIcon from '@/public/icons/editicon.png'
 import AddIcon from '@/public/icons/blackadd.png'
+import ThreeLine from '@/public/icons/line.png'
+import useToggleSidebar from '@/store/useToggleSidebar'
 
 const Todo = () => {
   const viewTask = useViewTaskModalState()
@@ -19,6 +21,8 @@ const Todo = () => {
 
   const deleteTask = useTaskStore(state => state.deleteTask)
   const { changeModalState } = useModalActions()
+
+  const toggleSidebar = useToggleSidebar(state => state.toggleSidebar)
 
   // tasks fetching (whole task)
   // const tasks = useTaskStore(state => state.tasks)
@@ -96,19 +100,22 @@ const Todo = () => {
   }
 
   return (
-    <div className=" relative z-0 w-full container h-full ">
-      <div className="text-[30px] font-bold border-b-4 py-[12px]">
-        <div className="flex items-center justify-between px-[5px]">
-          Today
-          <button onClick={checkboxDeleteBtn}>
-            <Image
-              src={RemoveIcon}
-              alt="delete button"
-              style={{ width: 22, height: 27.5 }}
-              className="  hover:bg-gray-200 active:bg-gray-300 "
-            />
+    <div className="relative z-0 w-full container h-full">
+      <div className="text-[30px] font-bold border-b-4 py-[12px] flex items-center justify-between px-[5px]">
+        <div className="flex justify-between">
+          <button onClick={toggleSidebar}>
+            <Image src={ThreeLine} alt="line" style={{ width: 20, height: 16 }} />
           </button>
+          <div className="pl-[15px]">Today</div>
         </div>
+        <button onClick={checkboxDeleteBtn}>
+          <Image
+            src={RemoveIcon}
+            alt="delete button"
+            style={{ width: 22, height: 27.5 }}
+            className="  hover:bg-gray-200 active:bg-gray-300 "
+          />
+        </button>
       </div>
 
       <div className="border-b-4 px-[4px] py-[4px]">
