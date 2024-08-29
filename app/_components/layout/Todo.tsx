@@ -7,13 +7,13 @@ import TaskForm from '@/common/modal/TaskForm'
 import { useTaskStore } from '@/store/useTaskStore'
 import { Task } from '@/_types/taskType'
 import TodoItem from './TodoItem'
+import useToggleSidebar from '@/store/useToggleSidebar'
 
 import Image from 'next/image'
 import RemoveIcon from '@/public/icons/trashcan.png'
 import EditIcon from '@/public/icons/editicon.png'
 import AddIcon from '@/public/icons/blackadd.png'
 import ThreeLine from '@/public/icons/line.png'
-import useToggleSidebar from '@/store/useToggleSidebar'
 
 const Todo = () => {
   const viewTask = useViewTaskModalState()
@@ -24,15 +24,6 @@ const Todo = () => {
 
   const toggleSidebar = useToggleSidebar(state => state.toggleSidebar)
 
-  // tasks fetching (whole task)
-  // const tasks = useTaskStore(state => state.tasks)
-  // const fetchTaskAll = useTaskStore(state => state.fetchTaskAll)
-
-  // useEffect(() => {
-  //   fetchTaskAll()
-  // }, [fetchTaskAll])
-
-  // tasks fetching (today only)
   const tasks = useTaskStore(state => state.tasks)
   const fetchTaskToday = useTaskStore(state => state.fetchTaskToday)
 
@@ -40,11 +31,15 @@ const Todo = () => {
     fetchTaskToday()
   }, [fetchTaskToday])
 
-  // task crud를 위한 selectedTask, 체크박스 선택을 위한 checkedTask
   const [selectedTask, setSelectedTask] = useState<Task | null>(null)
   const [checkedTask, setCheckedTask] = useState<{ [key: string]: boolean }>({})
+  const fetchTaskSelected = useTaskStore(state => state.fetchTaskSelected)
+  const [selectedDate, setSelectedDate] = useState(new Date())
 
-  // crud 버튼 함수 (addTaskBtn, viewTaskBtn, deleteTaskBtn, editTaskBtn)
+  useEffect(() => {
+    fetchTaskSelected(selectedDate)
+  }, [selectedDate, fetchTaskSelected])
+
   const addTaskBtn = useCallback(() => {
     setSelectedTask(null)
     changeModalState('add', true)
@@ -84,7 +79,6 @@ const Todo = () => {
     changeModalState('edit', true)
   }, [changeModalState])
 
-  // checkbox checking
   const checkingBox = (taskId: string, checked: boolean) => {
     setCheckedTask(prev => ({
       ...prev,
@@ -92,10 +86,9 @@ const Todo = () => {
     }))
   }
 
-  // checkbox removing
   const checkboxDeleteBtn = async () => {
-    const toDelete = Object.keys(checkedTask).filter(taskId => checkedTask[taskId])
-    await Promise.all(toDelete.map(taskId => deleteTask(Number(taskId))))
+    const taskIdChecktoDelete = Object.keys(checkedTask).filter(taskId => checkedTask[taskId])
+    await Promise.all(taskIdChecktoDelete.map(taskId => deleteTask(Number(taskId))))
     setCheckedTask({})
   }
 
@@ -106,14 +99,14 @@ const Todo = () => {
           <button onClick={toggleSidebar}>
             <Image src={ThreeLine} alt="line" style={{ width: 20, height: 16 }} />
           </button>
-          <div className="pl-[15px]">Today</div>
+          <div className="pl-[15px]">Today's Tasks</div>
         </div>
         <button onClick={checkboxDeleteBtn}>
           <Image
             src={RemoveIcon}
             alt="delete button"
             style={{ width: 22, height: 27.5 }}
-            className="  hover:bg-gray-200 active:bg-gray-300 "
+            className="hover:bg-gray-200 active:bg-gray-300"
           />
         </button>
       </div>
@@ -142,12 +135,13 @@ const Todo = () => {
 
       <Modal>
         {viewTask && selectedTask ? (
-          <div className="max-sm:w-full min-w-full bg-transparent resize-none h-80 ">
+          <div className="max-sm:w-full min-w-full bg-transparent resize-none h-80">
             {editTask ? (
               <TaskForm
                 initialTitle={selectedTask.todo_title}
                 initialDetail={selectedTask.todo_detail}
                 taskId={selectedTask.todo_id}
+                dueDate={selectedDate}
               />
             ) : (
               <div className="w-full h-full">
@@ -180,10 +174,11 @@ const Todo = () => {
             )}
           </div>
         ) : (
-          <TaskForm />
+          <TaskForm dueDate={selectedDate} />
         )}
       </Modal>
     </div>
   )
 }
+
 export default React.memo(Todo)

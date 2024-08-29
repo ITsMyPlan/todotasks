@@ -7,7 +7,7 @@ import { TaskFormProps } from '@/_types/taskType'
 import Image from 'next/image'
 import AddIconWhite from '@/public/icons/whiteadd.png'
 
-const TaskForm = ({ initialTitle = '', initialDetail = '', taskId = null }: TaskFormProps) => {
+const TaskForm = ({ initialTitle = '', initialDetail = '', taskId = null, dueDate = new Date() }: TaskFormProps) => {
   const { changeModalState } = useModalActions()
 
   const createTask = useTaskStore(state => state.createTask)
@@ -25,7 +25,7 @@ const TaskForm = ({ initialTitle = '', initialDetail = '', taskId = null }: Task
   const handleUpdateTask = async (e: FormEvent) => {
     e.preventDefault()
     if (!title || title.length === 0) {
-      alert('할일 타이틀을 작성해주세요.')
+      alert('오늘의 할일 타이틀을 작성해주세요.')
       return
     }
     if (taskId) {
@@ -33,7 +33,7 @@ const TaskForm = ({ initialTitle = '', initialDetail = '', taskId = null }: Task
       changeModalState('edit', false)
       changeModalState('view', false)
     } else {
-      await createTask(title, detail, user.id)
+      await createTask(title, detail, user.id, dueDate)
       changeModalState('add', false)
       changeModalState('view', false)
     }

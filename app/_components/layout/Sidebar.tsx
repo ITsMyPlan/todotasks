@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { useUserStore } from '@/store/useUserStore'
 import { useEffect } from 'react'
 import logout from '@/_components/auth/signOut/actions'
+import useToggleSidebar from '@/store/useToggleSidebar'
 
 import Image from 'next/image'
 import UnknownUser from '@/public/icons/unknown.png'
@@ -11,12 +12,11 @@ import CalendarIcon from '@/public/icons/calendaricon.png'
 import AddIcon from '@/public/icons/blackadd.png'
 import SignoutIcon from '@/public/icons/signoutIcon.png'
 import ArrowBtn from '@/public/icons/arrow1.png'
-import useToggleSidebar from '@/store/useToggleSidebar'
 
 const Sidebar = () => {
   const user = useUserStore(state => state.user)
   const checkisLogin = useUserStore(state => state.checkisLogin)
-  // const isSidebarVisible = useToggleSidebar(state => state.isSidebarVisible)
+
   const toggleSidebar = useToggleSidebar(state => state.toggleSidebar)
 
   useEffect(() => {
@@ -26,8 +26,8 @@ const Sidebar = () => {
   const email = user ? user.email : null
 
   return (
-    // max-md:hidden
-    <div className=" max-md:hidden mr-[10px] z-999 relative box-border bg-gray-100 font-bold text-neutral-500 rounded-2xl min-w-80 px-[27px] py-[22px]">
+    // max-md:hidden ? <= 8/23 현재 버튼 클릭으로 상태 공유하게 둿는데, 반응형으로 크기 조절 되었을 때도 상태에 영향이 공유되도록 하는 방법이 있을까?
+    <div className="max-md:hidden mr-[10px] z-999 relative box-border bg-gray-100 font-bold text-neutral-500 rounded-2xl min-w-80 px-[27px] py-[22px]">
       <div className="border-b-4  mb-[14px] pb-[18px]">
         <button type="button" className="flex items-center" onClick={toggleSidebar}>
           <div className="max-w-max mr-[18px]">
@@ -51,7 +51,7 @@ const Sidebar = () => {
               <div className="absolute right-0">
                 <Image src={ArrowBtn} alt="view more" style={{ width: 7, height: 14 }} />
               </div>
-            </button>{' '}
+            </button>
           </Link>
 
           <Link href="/calendar">

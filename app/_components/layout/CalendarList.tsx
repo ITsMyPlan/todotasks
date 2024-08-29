@@ -6,10 +6,13 @@ import Image from 'next/image'
 import ThreeLine from '@/public/icons/line.png'
 import useToggleSidebar from '@/store/useToggleSidebar'
 import CalendarItem from './CalendarItem'
+import { useTaskStore } from '@/store/useTaskStore'
 
 const CalendarList = () => {
   const toggleSidebar = useToggleSidebar(state => state.toggleSidebar)
   const [currentDate, setCurrentDate] = useState(new Date())
+  const [selectedDate, setSelectedDate] = useState(new Date())
+  const fetchTaskSelected = useTaskStore(state => state.fetchTaskSelected)
 
   const prevMonth = () => {
     setCurrentDate(subMonths(currentDate, 1))
@@ -17,6 +20,11 @@ const CalendarList = () => {
 
   const nextMonth = () => {
     setCurrentDate(addMonths(currentDate, 1))
+  }
+
+  const selectForOpenModal = (date: Date) => {
+    setSelectedDate(date)
+    fetchTaskSelected(date)
   }
 
   return (
@@ -38,7 +46,7 @@ const CalendarList = () => {
 
           <div>
             <WeekNames />
-            <CalendarItem currentDate={currentDate} />
+            <CalendarItem currentDate={currentDate} onDateSelect={selectForOpenModal} />
           </div>
         </div>
       </div>
