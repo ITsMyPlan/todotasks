@@ -45,12 +45,11 @@ export default function LoginForm() {
           access_type: 'offline',
           prompt: 'consent',
         },
-        // 로그인 성공 후 이동할 URL
       },
     })
     if (error) {
       console.error('OAuth login error:', error.message)
-      redirect('/signin') // OAuth flow error 시 /signin으로 이동
+      redirect('/signin')
     }
   }
 

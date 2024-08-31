@@ -13,8 +13,6 @@ export default function SignupForm() {
     password: '',
   })
 
-  // const [emailErr, setEmailErr] = useState<string>('')
-  // const [passwordErr, setPasswordErr] = useState<string>('')
   const [isChecked, setIsChecked] = useState(false)
 
   const emailRegEx = /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/

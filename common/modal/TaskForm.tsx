@@ -58,7 +58,7 @@ const TaskForm = ({ initialTitle = '', initialDetail = '', taskId = null, dueDat
   }, [])
 
   return (
-    <form onSubmit={handleUpdateTask} className="box-border">
+    <form onSubmit={handleUpdateTask} className="w-[320px] max-sm:w-full">
       <div className=" w-full h-full">
         <div className="box-border border-b-4 py-[8px]">
           <input

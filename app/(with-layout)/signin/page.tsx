@@ -5,7 +5,6 @@ import useToggleSidebar from '@/store/useToggleSidebar'
 
 export default function Home() {
   const isSidebarVisible = useToggleSidebar(state => state.isSidebarVisible)
-  // const toggleSidebar = useToggleSidebar(state => state.toggleSidebar)
 
   return (
     <div className="container flex h-full w-full z-0">

@@ -8,6 +8,7 @@ import { useTaskStore } from '@/store/useTaskStore'
 import { Task } from '@/_types/taskType'
 import TodoItem from './TodoItem'
 import useToggleSidebar from '@/store/useToggleSidebar'
+import { useUserStore } from '@/store/useUserStore'
 
 import Image from 'next/image'
 import RemoveIcon from '@/public/icons/trashcan.png'
@@ -16,6 +17,12 @@ import AddIcon from '@/public/icons/blackadd.png'
 import ThreeLine from '@/public/icons/line.png'
 
 const Todo = () => {
+  const checkisLogin = useUserStore(state => state.checkisLogin)
+
+    useEffect(() => {
+      checkisLogin()
+    }, [checkisLogin])
+    
   const viewTask = useViewTaskModalState()
   const editTask = useEditTaskModalState()
 
@@ -33,12 +40,7 @@ const Todo = () => {
 
   const [selectedTask, setSelectedTask] = useState<Task | null>(null)
   const [checkedTask, setCheckedTask] = useState<{ [key: string]: boolean }>({})
-  const fetchTaskSelected = useTaskStore(state => state.fetchTaskSelected)
   const [selectedDate, setSelectedDate] = useState(new Date())
-
-  useEffect(() => {
-    fetchTaskSelected(selectedDate)
-  }, [selectedDate, fetchTaskSelected])
 
   const addTaskBtn = useCallback(() => {
     setSelectedTask(null)
@@ -93,7 +95,7 @@ const Todo = () => {
   }
 
   return (
-    <div className="relative z-0 w-full container h-full">
+    <div className="relative z-0 w-screen container h-full">
       <div className="text-[30px] font-bold border-b-4 py-[12px] flex items-center justify-between px-[5px]">
         <div className="flex justify-between">
           <button onClick={toggleSidebar}>
@@ -135,7 +137,7 @@ const Todo = () => {
 
       <Modal>
         {viewTask && selectedTask ? (
-          <div className="max-sm:w-full min-w-full bg-transparent resize-none h-80">
+          <div className="w-[320px] max-sm:w-full bg-transparent resize-none h-80">
             {editTask ? (
               <TaskForm
                 initialTitle={selectedTask.todo_title}
