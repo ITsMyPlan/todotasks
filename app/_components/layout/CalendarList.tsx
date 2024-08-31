@@ -38,10 +38,14 @@ const CalendarList = () => {
             <div className="pl-[15px]">Calendar</div>
           </div>
 
-          <div className="flex justify-around items-center">
-            <button onClick={prevMonth}>prev</button>
-            <h1 className="">{format(currentDate, 'MMMM yyyy')}</h1>
-            <button onClick={nextMonth}>next</button>
+          <div className="flex justify-around items-center my-[10px]">
+            <button onClick={prevMonth} className="text-neutral-600">
+              {'< '}prev
+            </button>
+            <h1 className="text-[17px] font-bold text-neutral-800">{format(currentDate, 'MMMM yyyy')}</h1>
+            <button onClick={nextMonth} className="text-neutral-600">
+              next {' >'}
+            </button>
           </div>
 
           <div>

@@ -30,7 +30,6 @@ const CalendarItem: React.FC<CalendarItemProps> = ({ currentDate, onDateSelect }
       setSelectedDate(date)
       onDateSelect(date)
       fetchTaskSelected(date)
-      console.log('selectDateItem clicked!!!!! : ', date)
       if (!viewTask) {
         changeModalState('view', true)
       }
@@ -67,12 +66,12 @@ const CalendarItem: React.FC<CalendarItemProps> = ({ currentDate, onDateSelect }
   }, [changeModalState])
 
   return (
-    <div>
+    <div className="">
       {dateData.map((week, index) => (
-        <div key={index} className="flex justify-around gap-[6px] mb-[4px] w-full">
+        <div key={index} className="flex justify-around gap-[6px] mb-[4px] w-full ">
           {week.map(day => (
             <div onClick={() => selectDateItem(day)} key={format(day, 'yyyy-MM-dd')} className="w-full">
-              <div className="min-w-[60px] sm:w-[80px] md:w-full w-full min-h-[90px] px-[4px] py-[2px] bg-fuchsia-200">
+              <div className="min-w-[60px] sm:w-[80px] md:w-full w-full min-h-[90px] px-[4px] py-[2px] rounded-sm bg-neutral-50 text-neutral-700">
                 <button>{format(day, 'd')}</button>
               </div>
             </div>
