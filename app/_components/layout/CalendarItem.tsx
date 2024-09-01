@@ -1,7 +1,6 @@
-'use client'
 import React, { useCallback, useEffect, useState } from 'react'
 import takeMonth from '@/_utils/calendar/getCalendarDate'
-import { format } from 'date-fns'
+import { format, isSameMonth } from 'date-fns'
 import { Task } from '@/_types/taskType'
 import { useTaskStore } from '@/store/useTaskStore'
 import { useViewTaskModalState, useModalActions, useEditTaskModalState } from '@/store/useModalState'
@@ -10,16 +9,19 @@ import TaskForm from '@/common/modal/TaskForm'
 import Image from 'next/image'
 import RemoveIcon from '@/public/icons/trashcan.png'
 import EditIcon from '@/public/icons/editicon.png'
+
 interface CalendarItemProps {
   currentDate: Date
-  onDateSelect: (date: Date) => void
 }
-const CalendarItem: React.FC<CalendarItemProps> = ({ currentDate, onDateSelect }) => {
+
+const CalendarItem: React.FC<CalendarItemProps> = ({ currentDate }) => {
   const viewTask = useViewTaskModalState()
   const editTask = useEditTaskModalState()
   const deleteTask = useTaskStore(state => state.deleteTask)
   const { changeModalState } = useModalActions()
   const fetchTaskSelected = useTaskStore(state => state.fetchTaskSelected)
+  const fetchTaskMonth = useTaskStore(state => state.fetchTaskMonth)
+  const tasks = useTaskStore(state => state.tasks)
 
   const [selectedTask, setSelectedTask] = useState<Task | null>(null)
   const dateData = takeMonth(currentDate)()
@@ -28,18 +30,25 @@ const CalendarItem: React.FC<CalendarItemProps> = ({ currentDate, onDateSelect }
   const selectDateItem = useCallback(
     (date: Date) => {
       setSelectedDate(date)
-      onDateSelect(date)
-      fetchTaskSelected(date)
-      if (!viewTask) {
+      // onDateSelect(date)
+      // fetchTaskSelected(date)      // 갯수 보여주는 과정에서 지웠는데 RUD 구현할 때 필요할 거 같음
+if (!viewTask) {
         changeModalState('view', true)
       }
     },
-    [viewTask, changeModalState],
+    [viewTask, changeModalState, fetchTaskSelected],
   )
+  
+  //     [viewTask, changeModalState],
+  // )
+
+  // useEffect(() => {
+  //   fetchTaskSelected(selectedDate)
+  // }, [selectedDate, fetchTaskSelected])
 
   useEffect(() => {
-    fetchTaskSelected(selectedDate)
-  }, [selectedDate, fetchTaskSelected])
+    fetchTaskMonth(currentDate)
+  }, [currentDate, fetchTaskMonth])
 
   useEffect(() => {
     if (viewTask || editTask) {
@@ -65,17 +74,41 @@ const CalendarItem: React.FC<CalendarItemProps> = ({ currentDate, onDateSelect }
     changeModalState('edit', true)
   }, [changeModalState])
 
+  const getTaskCountForDate = (date: Date) => {
+    return tasks.filter(task => {
+      const taskDate = new Date(task.due_date)
+      return (
+        taskDate.getDate() === date.getDate() &&
+        taskDate.getMonth() === date.getMonth() &&
+        taskDate.getFullYear() === date.getFullYear()
+      )
+    }).length
+  }
+
   return (
     <div className="">
       {dateData.map((week, index) => (
         <div key={index} className="flex justify-around gap-[6px] mb-[4px] w-full ">
-          {week.map(day => (
-            <div onClick={() => selectDateItem(day)} key={format(day, 'yyyy-MM-dd')} className="w-full">
-              <div className="min-w-[60px] sm:w-[80px] md:w-full w-full min-h-[90px] px-[4px] py-[2px] rounded-sm bg-neutral-50 text-neutral-700">
-                <button>{format(day, 'd')}</button>
+          {week.map(day => {
+            const taskCount = getTaskCountForDate(day)
+            const isCurrentMonth = isSameMonth(day, currentDate)
+            return (
+              <div
+                onClick={() => selectDateItem(day)}
+                key={format(day, 'yyyy-MM-dd')}
+                className={`w-full ${!isCurrentMonth ? 'opacity-50' : ''}`}
+              >
+                <div className="min-w-[60px] sm:w-[80px] md:w-full w-full min-h-[90px] px-[4px] py-[2px] rounded-sm bg-neutral-50 text-neutral-700 relative">
+                  <button>{format(day, 'd')}</button>
+                  {taskCount > 0 && (
+                    <div className="absolute bottom-2 right-2 bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs">
+                      {taskCount}
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       ))}
       <Modal>

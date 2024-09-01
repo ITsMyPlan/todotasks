@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import WeekNames from './Weekname'
 import { addMonths, format, subMonths } from 'date-fns'
 import Image from 'next/image'
@@ -11,21 +11,24 @@ import { useTaskStore } from '@/store/useTaskStore'
 const CalendarList = () => {
   const toggleSidebar = useToggleSidebar(state => state.toggleSidebar)
   const [currentDate, setCurrentDate] = useState(new Date())
-  const [selectedDate, setSelectedDate] = useState(new Date())
-  const fetchTaskSelected = useTaskStore(state => state.fetchTaskSelected)
+  const fetchTaskMonth = useTaskStore(state => state.fetchTaskMonth)
+  
+  const prevMonth = useCallback(() => {
+    const minusMonth = subMonths(currentDate, 1)
+    setCurrentDate(minusMonth)
+    fetchTaskMonth(minusMonth)
+  }, [currentDate, fetchTaskMonth])
 
-  const prevMonth = () => {
-    setCurrentDate(subMonths(currentDate, 1))
-  }
+  const nextMonth = useCallback(() => {
+    const addMonth = addMonths(currentDate, 1)
+    setCurrentDate(addMonth)
+    fetchTaskMonth(addMonth)
+  }, [currentDate, fetchTaskMonth])
 
-  const nextMonth = () => {
-    setCurrentDate(addMonths(currentDate, 1))
-  }
 
-  const selectForOpenModal = (date: Date) => {
-    setSelectedDate(date)
-    fetchTaskSelected(date)
-  }
+  useEffect(() => {
+    fetchTaskMonth(currentDate)
+  }, [currentDate, fetchTaskMonth])
 
   return (
     <>
@@ -50,7 +53,7 @@ const CalendarList = () => {
 
           <div>
             <WeekNames />
-            <CalendarItem currentDate={currentDate} onDateSelect={selectForOpenModal} />
+            <CalendarItem currentDate={currentDate} />
           </div>
         </div>
       </div>

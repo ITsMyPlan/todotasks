@@ -5,16 +5,7 @@ import { addHours } from 'date-fns'
 
 export const useTaskStore = create<TodoState>(set => ({
   tasks: [],
-  fetchTaskAll: async () => {
-    const supabase = createClient()
-    const { data, error } = await supabase.from('todolist').select()
 
-    if (error) {
-      console.error('Fetching whole task ERROR:', error)
-    } else {
-      set({ tasks: data })
-    }
-  },
   fetchTaskToday: async () => {
     const startDayTime = new Date()
     startDayTime.setHours(0, 0, 0, 0)
@@ -51,6 +42,23 @@ export const useTaskStore = create<TodoState>(set => ({
 
     if (error) {
       console.error('Fetching selected date task ERROR:', error)
+    } else {
+      set({ tasks: data })
+    }
+  },
+  fetchTaskMonth: async (selectedDate: Date) => {
+    const startDayTime = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1)
+    const endDayTime = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0)
+
+    const supabase = createClient()
+    const { data, error } = await supabase
+      .from('todolist')
+      .select('*')
+      .gte('due_date', startDayTime.toISOString())
+      .lte('due_date', endDayTime.toISOString())
+
+    if (error) {
+      console.error('Fetching selected MONTH ERROR:', error)
     } else {
       set({ tasks: data })
     }
