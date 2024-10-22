@@ -56,7 +56,7 @@ export const useTaskStore = create<TodoState>(set => ({
     if (error) {
       console.error('Fetching selected date task ERROR:', error)
     } else {
-      set({ tasks: data as Task[] }) // 'data'를 Task[]로 명시적으로 변환
+      set({ tasks: data as Task[] })
     }
   },
 
@@ -109,8 +109,8 @@ export const useTaskStore = create<TodoState>(set => ({
         todo_title: data[0].todo_title,
         todo_detail: data[0].todo_detail || '', 
         user_id: data[0].user_id,
-        due_date: data[0].due_date || '',
-        created_at: data[0].created_at || '',
+        due_date: data[0].due_date,
+        created_at: data[0].created_at,
       }
 
       set(state => ({

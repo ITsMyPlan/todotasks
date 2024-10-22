@@ -7,7 +7,7 @@ type Props = {
   loadMore: () => void;
 };
 
-function InfiniteScroll({ isLoadingInitial, isLoadingMore, children, loadMore }: Props) {
+export default function InfiniteScroll({ isLoadingInitial, isLoadingMore, children, loadMore }: Props) {
   const observerElement = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -40,5 +40,3 @@ function InfiniteScroll({ isLoadingInitial, isLoadingMore, children, loadMore }:
     </>
   );
 }
-
-export default InfiniteScroll;
