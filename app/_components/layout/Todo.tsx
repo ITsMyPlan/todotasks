@@ -9,12 +9,14 @@ import { Task } from '@/_types/taskType'
 import TodoItem from './TodoItem'
 import useToggleSidebar from '@/store/useToggleSidebar'
 import { useUserStore } from '@/store/useUserStore'
+import InfiniteScroll from './InfiniteScroll'
 
 import Image from 'next/image'
 import RemoveIcon from '@/public/icons/trashcan.png'
 import EditIcon from '@/public/icons/editicon.png'
 import AddIcon from '@/public/icons/blackadd.png'
 import ThreeLine from '@/public/icons/line.png'
+
 
 const Todo = () => {
   const checkisLogin = useUserStore(state => state.checkisLogin)
@@ -31,13 +33,37 @@ const Todo = () => {
 
   const toggleSidebar = useToggleSidebar(state => state.toggleSidebar)
 
+// task view, 페이지당 20개씩 보여줌
   const tasks = useTaskStore(state => state.tasks)
   const fetchTaskToday = useTaskStore(state => state.fetchTaskToday)
+  const currentPage = useTaskStore(state => state.currentPage)
+
+  const hasMore = useTaskStore(state => state.hasMore)
+  const [isLoadingMore, setIsLoadingMore] = useState(false)
 
   useEffect(() => {
-    fetchTaskToday()
-  }, [fetchTaskToday])
+    const loadTasks = async () => {
+      if (!hasMore) return
 
+      setIsLoadingMore(true)
+      await fetchTaskToday()
+      setIsLoadingMore(false)
+    }
+
+    loadTasks()
+  }, [fetchTaskToday, hasMore])
+
+
+
+  const loadMoreTasks = async () => {
+   if (!hasMore || isLoadingMore) return
+
+   setIsLoadingMore(true)
+   await fetchTaskToday(currentPage + 1)
+   setIsLoadingMore(false)
+ }
+
+ // task CRUD 
   const [selectedTask, setSelectedTask] = useState<Task | null>(null)
   const [checkedTask, setCheckedTask] = useState<{ [key: string]: boolean }>({})
   const [selectedDate, setSelectedDate] = useState(new Date())
@@ -124,15 +150,17 @@ const Todo = () => {
       </div>
 
       <div className="relative">
-        {tasks.map(task => (
-          <TodoItem
-            key={task.todo_id}
-            task={task}
-            viewTaskBtn={viewTaskBtn}
-            checkTask={checkingBox}
-            checked={!!checkedTask[task.todo_id.toString()]}
-          />
-        ))}
+        <InfiniteScroll isLoadingInitial={false} isLoadingMore={isLoadingMore} loadMore={loadMoreTasks}>
+          {tasks.map(task => (
+            <TodoItem
+              key={task.todo_id}
+              task={task}
+              viewTaskBtn={viewTaskBtn}
+              checkTask={checkingBox}
+              checked={!!checkedTask[task.todo_id.toString()]}
+            />
+          ))}
+        </InfiniteScroll>
       </div>
 
       <Modal>
@@ -141,7 +169,7 @@ const Todo = () => {
             {editTask ? (
               <TaskForm
                 initialTitle={selectedTask.todo_title}
-                initialDetail={selectedTask.todo_detail}
+                initialDetail={selectedTask.todo_detail || ''}
                 taskId={selectedTask.todo_id}
                 dueDate={selectedDate}
               />
