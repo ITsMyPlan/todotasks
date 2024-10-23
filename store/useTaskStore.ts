@@ -80,12 +80,12 @@ export const useTaskStore = create<TodoState>(set => ({
     }
   },
 
-  createTask: async (title: string, detail: string | null, userId: string, dueDate: Date | null) => {
-    const kstDueDate = dueDate ? addHours(new Date(dueDate), 9) : null
+  createTask: async (title: string, detail: string | null, userId: string, dueDate: Date) => {
+    const kstDueDate = addHours(new Date(dueDate), 9) 
     const supabase = createClient()
     const { data, error } = await supabase
       .from('todolist')
-      .insert([{ todo_title: title, todo_detail: detail, user_id: userId, due_date: kstDueDate?.toISOString() }])
+      .insert([{ todo_title: title, todo_detail: detail, user_id: userId, due_date: kstDueDate.toISOString() }])
       .select()
 
     if (error) {
@@ -94,7 +94,7 @@ export const useTaskStore = create<TodoState>(set => ({
       set(state => ({ tasks: [...state.tasks, ...(data as Task[])] }))
     }
   },
-  editTask: async (id: number, title: string, detail: string) => {
+  editTask: async (id: number, title: string, detail: string|null) => {
     const supabase = createClient()
     const { data, error } = await supabase
       .from('todolist')
@@ -104,7 +104,7 @@ export const useTaskStore = create<TodoState>(set => ({
 
     if (error) {
       console.error('Error editing task: ' + error.message)
-    } else if (data && data.length > 0) {
+    } else if (data.length > 0) {
 
       const updatedTask: Task = {
         todo_id: data[0].todo_id,
