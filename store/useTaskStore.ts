@@ -10,10 +10,12 @@ export const useTaskStore = create<TodoState>(set => ({
 
   fetchTaskToday: async (page: number = 0) => {
     const startDayTime = new Date()
-    startDayTime.setHours(0, 0, 0, 0)
+    startDayTime.setHours(0, 0, 0, 0) 
+    startDayTime.setHours(startDayTime.getHours() + 9) 
 
     const endDayTime = new Date()
     endDayTime.setHours(23, 59, 59, 999)
+    endDayTime.setHours(endDayTime.getHours() + 9)
 
     const supabase = createClient()
     const { data, error } = await supabase
