@@ -15,13 +15,17 @@ export default function LoginForm() {
     password: '',
   })
   const checkisLogin = useUserStore(state => state.checkisLogin)
+  
+  const RegEx = new RegExp(
+   /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/,
+ )
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    if (!form.email) {
+    if (!form.email || !RegEx.test(form.email)) {
       alert('이메일을 다시 작성해주세요.')
-    } else if (!form.password) {
-      alert('틀린 비밀번호입니다.')
+    } else if (!form.password || form.password.length < 8) {
+      alert('비밀번호를 다시 작성해주세요.')
     } else {
       const formData = new FormData()
       formData.append('email', form.email)

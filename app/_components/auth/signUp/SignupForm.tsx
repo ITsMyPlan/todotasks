@@ -18,44 +18,36 @@ export default function SignupForm() {
   const emailRegEx = /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/
   const passwordRegEx = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$/
 
-  const validateEmail = (): boolean => {
-    if (!emailRegEx.test(form.email)) {
-      alert('이메일 양식에 맞게 작성해주세요.')
-      return false
-    } else {
-      return true
-    }
-  }
-
-  const validatePassword = (): boolean => {
-    if (!passwordRegEx.test(form.password)) {
-      alert('비밀번호는 최소 8자 이상 작성해주세요')
-      return false
-    } else {
-      return true
-    }
-  }
-
   const checkingPolicy = () => {
     setIsChecked(true)
   }
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    const isEmailValid = validateEmail()
-    const isPasswordValid = validatePassword()
+    let isValid = true
+
+    if (!emailRegEx.test(form.email)) {
+      alert('이메일 양식에 맞게 작성해주세요.')
+      isValid = false
+    }
+    if (!passwordRegEx.test(form.password)) {
+      alert('비밀번호는 최소 8자 이상 16자 이하로 대소문자와 특수문자를 섞어서 작성해주세요.')
+      isValid = false
+    }
     if (!isChecked) {
       alert('안내 사항을 체크해주셔야 회원가입이 진행됩니다.')
-    } else if (!isEmailValid && isPasswordValid && isChecked) {
-      alert('양식에 맞춰 작성해주세요.')
-    } else {
+      isValid = false
+    }
+
+    if (isValid) {
       const formData = new FormData()
       formData.append('email', form.email)
       formData.append('password', form.password)
-     const response = await signup(formData)
-     if(response && response.error){
-      alert("이미 존재하는 계정입니다.")
-     }
+
+      const response = await signup(formData)
+      if (response && response.error) {
+        alert('이미 존재하는 계정입니다.')
+      }
     }
   }
 
@@ -106,7 +98,7 @@ export default function SignupForm() {
         />
 
         <div className="flex items-center justify-center my-[10px] px-[3px]">
-          <input type="checkbox" id="policy" name="policy" onClick={checkingPolicy} />
+          <input type="checkbox" id="policy" name="policy" onClick={checkingPolicy} required />
           <label htmlFor="policy" className="ml-[10px] text-[13px] font-semibold">
             By clicking ”Create Account” or “Continue with Google”, you agree to the TodoTasks and Privacy Policy.
           </label>
