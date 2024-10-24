@@ -3,6 +3,7 @@ import { FormEvent, useState } from 'react'
 import { signup } from './actions'
 import { createClient } from '@/_utils/supabase/client'
 import { SigninFormProps } from '@/_types/userType'
+import { redirect } from 'next/navigation'
 
 import Image from 'next/image'
 import googleIcon from '@/public/icons/google.png'
@@ -16,7 +17,7 @@ export default function SignupForm() {
   const [isChecked, setIsChecked] = useState(false)
 
   const emailRegEx = /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/
-  const passwordRegEx = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$/
+  const passwordRegEx = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/
 
   const checkingPolicy = () => {
     setIsChecked(true)
@@ -31,7 +32,7 @@ export default function SignupForm() {
       isValid = false
     }
     if (!passwordRegEx.test(form.password)) {
-      alert('비밀번호는 최소 8자 이상 16자 이하로 대소문자와 특수문자를 섞어서 작성해주세요.')
+      alert('비밀번호는 최소 8자로, 하나 이상의 대소문자, 숫자, 특수문자를 섞어서 작성해주세요.')
       isValid = false
     }
     if (!isChecked) {
@@ -51,12 +52,24 @@ export default function SignupForm() {
     }
   }
 
-  const handleGoogleLogin = () => {
-    const supabase = createClient()
-    supabase.auth.signInWithOAuth({
-      provider: 'google',
-    })
-  }
+   const handleGoogleLogin = async () => {
+     const supabase = createClient()
+     const { error } = await supabase.auth.signInWithOAuth({
+       provider: 'google',
+       options: {
+         redirectTo: 'http://localhost:3000/auth/callback',
+         queryParams: {
+           access_type: 'offline',
+           prompt: 'consent',
+         },
+       },
+     })
+     if (error) {
+       console.error('OAuth login error:', error.message)
+       redirect('/signup')
+     }
+   }
+
 
   return (
     <div className="max-sm:w-11/12 w-[338px] flex flex-col items-center justify-center my-[20px]">

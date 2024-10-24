@@ -16,29 +16,24 @@ export default function LoginForm() {
   })
   const checkisLogin = useUserStore(state => state.checkisLogin)
   
-  const RegEx = new RegExp(
-   /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/,
- )
-
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    if (!form.email || !RegEx.test(form.email)) {
-      alert('이메일을 다시 작성해주세요.')
-    } else if (!form.password || form.password.length < 8) {
-      alert('비밀번호를 다시 작성해주세요.')
+    if (!form.email || !form.password) {
+      alert('다시 작성해주세요.')
     } else {
       const formData = new FormData()
       formData.append('email', form.email)
       formData.append('password', form.password)
       const response = await login(formData)
-      if (response && response.error) {
-        alert('일치하는 계정이 없습니다. 다시 작성해주세요. ')
+      
+      if (response&&response.error) {
+        alert('일치하는 계정이 없습니다. 다시 작성해주세요.')
       } else {
         await checkisLogin()
       }
     }
   }
-
+  
   const handleGoogleLogin = async () => {
     const supabase = createClient()
     const { error } = await supabase.auth.signInWithOAuth({
