@@ -22,5 +22,5 @@ export interface TaskFormProps {
   initialTitle?: string
   initialDetail?: string
   taskId?: number | null
-  dueDate?: Date 
+  dueDate?: Date | string
 }

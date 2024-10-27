@@ -86,9 +86,9 @@ if (!viewTask) {
   }
 
   return (
-    <div className="">
+    <div className="w-full h-full">
       {dateData.map((week, index) => (
-        <div key={index} className="flex justify-around gap-[6px] mb-[4px] w-full ">
+        <div key={index} className="flex justify-around gap-[3px] mb-[4px] w-full h-full">
           {week.map(day => {
             const taskCount = getTaskCountForDate(day)
             const isCurrentMonth = isSameMonth(day, currentDate)
@@ -98,7 +98,7 @@ if (!viewTask) {
                 key={format(day, 'yyyy-MM-dd')}
                 className={`w-full ${!isCurrentMonth ? 'opacity-50' : ''}`}
               >
-                <div className="min-w-[60px] sm:w-[80px] md:w-full w-full min-h-[90px] px-[4px] py-[2px] rounded-sm bg-neutral-50 text-neutral-700 relative">
+                <div className="min-w-[40px] sm:w-[80px] md:w-full w-full h-full min-md:h-[90px] max-md:h-[84px] md:h-[90px] px-[4px] py-[2px] rounded-sm bg-neutral-50 text-neutral-700 relative">
                   <button>{format(day, 'd')}</button>
                   {taskCount > 0 && (
                     <div className="absolute bottom-2 right-2 bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs">
@@ -117,7 +117,7 @@ if (!viewTask) {
             {editTask ? (
               <TaskForm
                 initialTitle={selectedTask.todo_title}
-                initialDetail={selectedTask.todo_detail}
+                initialDetail={selectedTask.todo_detail || ''}
                 taskId={selectedTask.todo_id}
                 dueDate={selectedTask.due_date}
               />

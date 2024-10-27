@@ -32,7 +32,7 @@ const CalendarList = () => {
 
   return (
     <>
-      <div className="box-border w-full h-full">
+      <div className="box-border relative z-0 w-screen h-full">
         <div className="flex flex-col">
           <div className="text-[30px] flex items-center font-bold border-b-4 py-[12px] px-[5px]">
             <button onClick={toggleSidebar}>

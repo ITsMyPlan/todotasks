@@ -27,7 +27,7 @@ const Sidebar = () => {
 
   return (
     // max-md:hidden ? <= 8/23 현재 버튼 클릭으로 상태 공유하게 둿는데, 반응형으로 크기 조절 되었을 때도 상태에 영향이 공유되도록 하는 방법이 있을까?
-    <div className="max-md:hidden mr-[10px] z-999 relative box-border bg-gray-100 font-bold text-neutral-500 rounded-2xl min-w-80 px-[27px] py-[22px]">
+    <div className="max-md:hidden mr-[10px] z-900 relative box-border bg-gray-100 font-bold text-neutral-500 rounded-2xl min-w-80 px-[27px] py-[22px]">
       <div className="border-b-4  mb-[14px] pb-[18px]">
         <button type="button" className="flex items-center" onClick={toggleSidebar}>
           <div className="max-w-max mr-[18px]">
