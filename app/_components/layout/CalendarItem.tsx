@@ -119,7 +119,7 @@ if (!viewTask) {
                 initialTitle={selectedTask.todo_title}
                 initialDetail={selectedTask.todo_detail || ''}
                 taskId={selectedTask.todo_id}
-                dueDate={selectedTask.due_date}
+                dueDate={new Date(selectedTask.due_date)}
               />
             ) : (
               <div className="w-full h-full">
