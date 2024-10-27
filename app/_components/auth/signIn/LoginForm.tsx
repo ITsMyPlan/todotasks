@@ -39,7 +39,7 @@ export default function LoginForm() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: 'http://localhost:3000/auth/callback',
+        redirectTo: 'https://main.d2qq5nygiqo9v7.amplifyapp.com/auth/callback',
         queryParams: {
           access_type: 'offline',
           prompt: 'consent',
