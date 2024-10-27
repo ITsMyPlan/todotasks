@@ -34,6 +34,9 @@
     ],
     "eqeqeq": "off",
     "react/button-has-type": "off",
-    "react/function-component-definition":[3, {"namedcomponents": ["function-declaration", "function-expression", "arrow-function"]}] 
+    "react/function-component-definition":[2, {
+      "namedcomponents": ["function-declaration", "function-expression", "arrow-function"],
+      "unnamedComponents": ["function-declaration", "function-expression", "arrow-function"]
+  }] 
   }
 }
